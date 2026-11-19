@@ -48,6 +48,7 @@ function ContractorMod:init()
     ContractorMod.switching = false 
     ContractorMod.displayPlayerNames = true
     ContractorMod.enablePassenger = false
+    ContractorMod.registeredActivatables = {}
 
     self:registerXmlSchema()
 
@@ -414,6 +415,7 @@ function ContractorMod:setCurrentContractorModWorker(setID)
   currentWorker = ContractorMod.workers[ContractorMod.currentID]
   if currentWorker ~= nil then
     currentWorker:afterSwitch()
+    ContractorMod:resetOutOfRangeActivatables(50)
     ContractorMod.shouldStopWorker = true
     ContractorMod.switching = false
   end

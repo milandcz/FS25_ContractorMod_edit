@@ -1,4 +1,5 @@
 source(Utils.getFilename("scripts/cmAIHotspot.lua", g_currentModDirectory))
+source(Utils.getFilename("scripts/cmActivatableObjectsSystem.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/cmEnterable.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/cmEnterablePassenger.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/cmFSBaseMission.lua", g_currentModDirectory))
