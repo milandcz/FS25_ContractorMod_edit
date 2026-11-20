@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI name="contractorModSettingsFrame">
     <GuiProfiles>
+        <Profile name="cmWorkersLayout" extends="fs25_settingsLayout">
+            <imageColor value="$preset_fs25_colorMainDark"/>
+        </Profile>
         <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopStretchingX">
             <height value="92px"/>
+            <imageColor value="$preset_fs25_colorGrey"/>
         </Profile>
         <Profile name="cmHireRow" extends="fs25_multiTextOptionContainer" with="anchorTopStretchingX">
             <height value="48px"/>
+            <imageColor value="$preset_fs25_colorGrey"/>
         </Profile>
-        <Profile name="cmRowTitle" extends="fs25_settingsMultiTextOptionTitle" with="anchorTopLeft">
+        <Profile name="cmRowTitle" extends="baseReference" with="anchorTopLeft">
             <textSize value="16px"/>
             <textBold value="true"/>
+            <textColor value="$preset_fs25_colorMainLight"/>
+            <textAlignment value="left"/>
         </Profile>
-        <Profile name="cmRowText" extends="fs25_settingsMultiTextOptionTitle" with="anchorTopLeft">
+        <Profile name="cmRowText" extends="baseReference" with="anchorTopLeft">
             <textSize value="14px"/>
-            <textBold value="false"/>
+            <textColor value="$preset_fs25_colorMainLight"/>
+            <textAlignment value="left"/>
         </Profile>
         <Profile name="cmActionButton" extends="fs25_mapButtonAction1" with="anchorTopLeft">
             <textSize value="13px"/>
@@ -26,7 +34,7 @@
             </Bitmap>
             <Text profile="fs25_menuHeaderTitle" text="$l10n_ContractorMod_SETTINGS_TITLE" size="500px 32px"/>
         </GuiElement>
-        <ScrollingLayout profile="fs25_settingsLayout" id="workersLayout">
+        <ScrollingLayout profile="cmWorkersLayout" id="workersLayout">
             <Bitmap id="workerRowTemplate" profile="cmWorkerRow" visible="false">
                 <Text name="rowTitle" profile="cmRowTitle" position="10px 4px" size="300px 26px"/>
                 <Button name="renameButton" profile="cmActionButton" position="320px 2px" size="180px 28px" text="$l10n_ContractorMod_RENAME"/>
