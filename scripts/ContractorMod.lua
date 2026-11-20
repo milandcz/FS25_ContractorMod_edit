@@ -48,6 +48,7 @@ function ContractorMod:init()
     ContractorMod.switching = false 
     ContractorMod.displayPlayerNames = true
     ContractorMod.enablePassenger = false
+    ContractorMod.registeredActivatables = {}
 
     self:registerXmlSchema()
 
@@ -398,6 +399,36 @@ function ContractorMod:activateWorker(actionName, keyStatus)
   end
 end
 
+function ContractorMod:resetOutOfRangeActivatables(maxDistance)
+  if ContractorMod.debug then print("ContractorMod:resetOutOfRangeActivatables()") end
+  local activatableObjectsSystem = g_currentMission and g_currentMission.activatableObjectsSystem
+  if activatableObjectsSystem == nil or ContractorMod.registeredActivatables == nil or g_localPlayer == nil then
+    return
+  end
+  local entryMaxDistance = 10
+  local x, y, z = g_localPlayer:getPosition()
+  for activatable, entry in pairs(ContractorMod.registeredActivatables) do
+    if activatable ~= nil then
+      local nodeDistance = nil
+      if activatable.getDistance ~= nil then
+        local success, distance = pcall(activatable.getDistance, activatable, x, y, z)
+        if success and type(distance) == "number" and distance > 0 then
+          nodeDistance = distance
+        end
+      end
+      local outOfRange = false
+      if nodeDistance ~= nil then
+        outOfRange = nodeDistance > maxDistance
+      elseif type(entry) == "table" and entry.x ~= nil then
+        outOfRange = MathUtil.vector3Length(x - entry.x, y - entry.y, z - entry.z) > entryMaxDistance
+      end
+      if outOfRange then
+        activatableObjectsSystem:removeActivatable(activatable)
+      end
+    end
+  end
+end
+
 -- @doc Change active worker
 function ContractorMod:setCurrentContractorModWorker(setID)
   if ContractorMod.debug then print("ContractorMod:setCurrentContractorModWorker(setID) " .. tostring(setID) .. " - " .. tostring(ContractorMod.currentID)) end
@@ -414,6 +445,9 @@ function ContractorMod:setCurrentContractorModWorker(setID)
   currentWorker = ContractorMod.workers[ContractorMod.currentID]
   if currentWorker ~= nil then
     currentWorker:afterSwitch()
+    if ContractorMod.resetOutOfRangeActivatables ~= nil then
+      ContractorMod:resetOutOfRangeActivatables(50)
+    end
     ContractorMod.shouldStopWorker = true
     ContractorMod.switching = false
   end
