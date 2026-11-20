@@ -31,10 +31,10 @@ function ContractorModSettingsFrame:onGuiSetupFinished()
     self.headerIcon:setImageFilename(Utils.getFilename("icon_ContractorMod.dds", cmModDirectory))
   end
   if self.workerRowTemplate ~= nil then
-    self.workerRowTemplate:unlinkElement()
+    self.workerRowTemplate:setVisible(false)
   end
   if self.hireRowTemplate ~= nil then
-    self.hireRowTemplate:unlinkElement()
+    self.hireRowTemplate:setVisible(false)
   end
 end
 
