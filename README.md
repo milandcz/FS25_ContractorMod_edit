@@ -1,3 +1,11 @@
+MY UPDATE
+-------------
+20-NOV-2026 - v0.1.0
+Fixed trigger detection for individual characters. Triggers are now detected only for the active character.
+
+
+ORIGINAL TEXT
+-------------
 This mod enable simulating a defined number of characters you control one by one during a solo game.
 
 By default, 4 characters are available Alex, Brenda, Chris and David.
