@@ -193,7 +193,7 @@ function cmSettingsFrame.registerInGameMenuPage()
   if menu == nil and g_gui ~= nil and g_gui.screenControllers ~= nil then
     menu = g_gui.screenControllers[InGameMenu]
   end
-  if menu == nil or menu.pagingElement == nil then
+  if menu == nil or menu.pagingElement == nil or menu.pageFrames == nil or cmModDirectory == nil then
     return
   end
   if menu.pageTypeControllers ~= nil and menu.pageTypeControllers[ContractorModSettingsFrame] ~= nil then
@@ -210,17 +210,36 @@ function cmSettingsFrame.registerInGameMenuPage()
     print("ContractorMod: could not load settings page gui: " .. tostring(err))
     return
   end
-  ContractorModSettingsFrame.instance = frame
-  pcall(function()
-    menu[ContractorModSettingsFrame.PAGE_NAME] = frame
-    menu.pagingElement:addElement(frame)
+  local frameFieldName = "pageContractorModSettings"
+  local registered = pcall(function()
+    local xmlFile = loadXMLFile("cmSettingsFrameRefXML", Utils.getFilename("gui/ContractorModSettingsFrameRef.xml", cmModDirectory))
+    if xmlFile == nil or xmlFile == 0 then
+      error("frame reference xml not found")
+    end
+    menu.controlIDs[frameFieldName] = nil
+    g_gui:loadGuiRec(xmlFile, "FrameReferences", menu.pagingElement, menu)
+    menu:exposeControlsAsFields(frameFieldName)
+    menu.pagingElement:updatePageMapping()
+    delete(xmlFile)
+    local resolved = g_gui:resolveFrameReference(menu[frameFieldName])
+    if resolved == nil then
+      error("frame reference could not be resolved")
+    end
+    menu[frameFieldName] = resolved
+    menu.pagingElement:removePageByElement(resolved)
+    local _, actualPosition = menu:registerPage(resolved, nil, function() return ContractorMod.workers ~= nil end)
+    local iconFilename = Utils.getFilename("icon_ContractorMod.dds", cmModDirectory)
+    menu:addPageTab(resolved, iconFilename, GuiUtils.getUVs(ContractorModSettingsFrame.ICON_UVS, ContractorModSettingsFrame.ICON_REF))
+    menu.pagingElement:addPage(string.upper(ContractorModSettingsFrame.PAGE_NAME), resolved, g_i18n:getText("ui_" .. ContractorModSettingsFrame.PAGE_NAME), actualPosition)
+    resolved:onGuiSetupFinished()
     menu.pagingElement:updateAbsolutePosition()
     menu.pagingElement:updatePageMapping()
-    menu:registerPage(frame, nil, function() return ContractorMod.workers ~= nil end)
-    local iconFilename = Utils.getFilename("icon_ContractorMod.dds", cmModDirectory)
-    menu:addPageTab(frame, iconFilename, GuiUtils.getUVs(ContractorModSettingsFrame.ICON_UVS, ContractorModSettingsFrame.ICON_REF))
-    menu:updatePages()
+    menu:rebuildTabList()
+    ContractorModSettingsFrame.instance = resolved
   end)
+  if not registered then
+    print("ContractorMod: could not register settings page in in-game menu")
+  end
 end
 
 InGameMenu.onMenuOpened = Utils.appendedFunction(InGameMenu.onMenuOpened, function()

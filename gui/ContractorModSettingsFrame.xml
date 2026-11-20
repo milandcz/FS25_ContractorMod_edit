@@ -26,7 +26,7 @@
             </Bitmap>
             <Text profile="fs25_menuHeaderTitle" text="$l10n_ContractorMod_SETTINGS_TITLE" size="500px 32px"/>
         </GuiElement>
-        <ScrollingLayout profile="fs25_settingsLayout" id="workersLayout" position="20px -70px" size="1500px 590px">
+        <ScrollingLayout profile="fs25_settingsLayout" id="workersLayout">
             <Bitmap id="workerRowTemplate" profile="cmWorkerRow" visible="false">
                 <Text name="rowTitle" profile="cmRowTitle" position="10px 4px" size="300px 26px"/>
                 <Button name="renameButton" profile="fs25_buttonSmall" position="320px 2px" size="180px 28px" text="$l10n_ContractorMod_RENAME"/>
