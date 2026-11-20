@@ -10,7 +10,9 @@ PlayerInputComponent.registerGlobalPlayerActionEvents = Utils.appendedFunction(P
                                 "ContractorMod_WORKER5",
                                 "ContractorMod_WORKER6",
                                 "ContractorMod_WORKER7",
-                                "ContractorMod_WORKER8" }) do
+                                "ContractorMod_WORKER8",
+                                "ContractorMod_WORKER9",
+                                "ContractorMod_WORKER10" }) do
       -- print("actionName "..actionName)
       local success, eventName, event, action = g_inputBinding:registerActionEvent(InputAction[actionName], ContractorMod, ContractorMod.activateWorker, false, true, false, true)
       if success then

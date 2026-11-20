@@ -25,3 +25,8 @@ Characters can be seen on the minimap when activating default category (the last
 TO FIX: Name, gender, color, body, hair, accessories and number of characters can be changed in ContractorMod.xml file located in modSettings directory for new games.
 Once a game has been saved, they can be changed in ContractorMod.xml file present in related savegame folder.
 TO IMPLEMENT: ContractorMod.xml file also contains configuration for passengers for mods vehicles. You can add your own mods here.
+
+
+IN-GAME SETTINGS TAB
+---------------------
+The in-game menu (Esc/Enter during a running game) has a ContractorMod tab where the number of workers can be changed in real time (min 1, max 10): hire and fire workers, rename them, see their location (coordinates or vehicle), state (CoursePlay course / AutoDrive task / AI job / driving / on foot), remaining time, and switch to them or fire them. A hired worker spawns next to the active character; a worker inside a vehicle cannot be fired.

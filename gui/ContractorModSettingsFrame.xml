@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<GUI name="contractorModSettingsFrame">
+    <GuiProfiles>
+        <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopStretchingX">
+            <height value="92px"/>
+        </Profile>
+        <Profile name="cmHireRow" extends="fs25_multiTextOptionContainer" with="anchorTopStretchingX">
+            <height value="48px"/>
+        </Profile>
+        <Profile name="cmRowTitle" extends="baseReference" with="anchorTopLeft">
+            <textSize value="16px"/>
+            <textBold value="true"/>
+            <textColor value="$preset_fs25_colorMainLight"/>
+            <textAlignment value="left"/>
+        </Profile>
+        <Profile name="cmRowText" extends="baseReference" with="anchorTopLeft">
+            <textSize value="14px"/>
+            <textColor value="$preset_colorWhite_50"/>
+            <textAlignment value="left"/>
+        </Profile>
+    </GuiProfiles>
+    <GuiElement profile="fs25_menuContainer">
+        <GuiElement profile="fs25_menuHeaderPanel">
+            <Bitmap profile="fs25_menuHeaderIconBg">
+                <Bitmap id="headerIcon" profile="fs25_menuHeaderIcon" size="50px 50px"/>
+            </Bitmap>
+            <Text profile="fs25_menuHeaderTitle" text="$l10n_ContractorMod_SETTINGS_TITLE" size="500px 32px"/>
+        </GuiElement>
+        <ScrollingLayout profile="fs25_settingsLayout" id="workersLayout" position="20px -70px" size="1500px 590px">
+            <Bitmap id="workerRowTemplate" profile="cmWorkerRow" visible="false">
+                <Text name="rowTitle" profile="cmRowTitle" position="10px 4px" size="300px 26px"/>
+                <Button name="renameButton" profile="fs25_buttonSmall" position="320px 2px" size="180px 28px" text="$l10n_ContractorMod_RENAME"/>
+                <Button name="switchButton" profile="fs25_buttonSmall" position="1210px 2px" size="150px 28px" text="$l10n_ContractorMod_SWITCH"/>
+                <Button name="fireButton" profile="fs25_buttonSmall" position="1370px 2px" size="140px 28px" text="$l10n_ContractorMod_FIRE"/>
+                <Text name="locationText" profile="cmRowText" position="10px 36px" size="1100px 24px"/>
+                <Text name="stateText" profile="cmRowText" position="10px 62px" size="1100px 24px"/>
+                <Text name="remainingText" profile="cmRowText" position="1120px 62px" size="390px 24px"/>
+            </Bitmap>
+            <Bitmap id="hireRowTemplate" profile="cmHireRow" visible="false">
+                <Button name="hireButton" profile="fs25_button" position="1310px 4px" size="190px 38px" text="$l10n_ContractorMod_HIRE"/>
+            </Bitmap>
+        </ScrollingLayout>
+    </GuiElement>
+    <ThreePartBitmap profile="fs25_sliderDockedBg">
+        <ThreePartBitmap profile="fs25_sliderDockedBox">
+            <Slider profile="fs25_helpLineSlider" dataElementId="workersLayout"/>
+        </ThreePartBitmap>
+    </ThreePartBitmap>
+</GUI>

@@ -36,6 +36,9 @@ Mission00.onStartMission = Utils.appendedFunction(Mission00.onStartMission, func
       end
     end
     -- DebugUtil.printTableRecursively(ContractorMod.workers, " ", 1, 3) 
+    if cmSettingsFrame ~= nil then
+      cmSettingsFrame.registerInGameMenuPage()
+    end
 end)
 
 -- Display a warning message in the log when loading savegame

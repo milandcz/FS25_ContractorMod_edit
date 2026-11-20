@@ -33,7 +33,11 @@ end
 function cmNPCManager:loadMapData(xmlFile, missionInfo, baseDirectory)
     print("cmNPCManager:loadMapData")
     NPCManager:superClass().loadMapData(self)
-	for i = 1, 8 do
+	local maxHelpers = 10
+	if ContractorMod ~= nil and ContractorMod.MAX_WORKERS ~= nil then
+		maxHelpers = ContractorMod.MAX_WORKERS
+	end
+	for i = 1, maxHelpers do
 		local npcName = "HELPER"..i
 		cmNPCManager:loadNPC(nil, npcName, missionInfo, baseDirectory)
 	end
