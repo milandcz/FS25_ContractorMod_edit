@@ -60,7 +60,7 @@
             <Text profile="cmHeaderCell" position="915px 0px" size="130px 32px" text="$l10n_ContractorMod_REMAINING"/>
             <Text profile="cmHeaderCell" position="1055px 0px" size="270px 32px" text="$l10n_ContractorMod_COL_ACTIONS"/>
         </GuiElement>
-        <ScrollingLayout profile="cmWorkersLayout" id="workersLayout">
+        <ScrollingLayout profile="cmWorkersLayout" id="workersLayout" flowDirection="vertical" numFlows="1">
             <Bitmap id="workerRowTemplate" profile="cmWorkerRow" visible="false">
                 <Button name="renameButton" profile="cmActionButton" position="5px 2px" size="240px 28px" text=""/>
                 <Text name="locationText" profile="cmRowText" position="255px 4px" size="280px 24px"/>
