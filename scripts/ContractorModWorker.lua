@@ -25,24 +25,26 @@ function ContractorModWorker:new(name, index, workerStyle)
   self.playerStyle = PlayerStyle.new()
   self.playerStyle:copyFrom(workerStyle)
   self.active = true
-  self.npc = g_npcManager:getNPCByName("HELPER" .. index)
-  self.npc.playerGraphics:setIsFacialAnimationEnabled(false)
-  self.npc.playerGraphics:setStyleAsync(workerStyle, self.npc.loadCharacterFinished, self.npc, {})
-  self.npc.title = name
-  self.npc.mapHotspot.icon:setColor(unpack(Farm.COLORS[index]))
-  self.npc.mapHotspot.iconSmall:setColor(unpack(Farm.COLORS[index]))
-  if workerStyle:getIsMale() then
-    -- self.npc.mapHotspot.icon:setImageFilename(Utils.getFilename("images/maleHelper.png", g_currentModDirectory))
-    self.npc.imageFilename = g_npcManager:getNPCByName("HELPER").imageFilename
-  else
-    -- self.npc.mapHotspot.icon:setImageFilename(Utils.getFilename("images/femaleHelper.png", g_currentModDirectory))
-    self.npc.imageFilename = g_npcManager:getNPCByName("ANIMAL_DEALER").imageFilename
+  local colorIndex = ((index - 1) % #Farm.COLORS) + 1
+  local npcIndex = index
+  if ContractorMod.getFreeNPCIndex ~= nil and ContractorMod.workers ~= nil then
+    npcIndex = ContractorMod:getFreeNPCIndex() or index
+  end
+  self.npc = g_npcManager:getNPCByName("HELPER" .. npcIndex)
+  if self.npc ~= nil then
+    self.npc.playerGraphics:setIsFacialAnimationEnabled(false)
+    self.npc.playerGraphics:setStyleAsync(workerStyle, self.npc.loadCharacterFinished, self.npc, {})
+    self.npc.title = name
+    self.npc.mapHotspot.icon:setColor(unpack(Farm.COLORS[colorIndex]))
+    self.npc.mapHotspot.iconSmall:setColor(unpack(Farm.COLORS[colorIndex]))
+    if workerStyle:getIsMale() then
+      self.npc.imageFilename = g_npcManager:getNPCByName("HELPER").imageFilename
+    else
+      self.npc.imageFilename = g_npcManager:getNPCByName("ANIMAL_DEALER").imageFilename
+    end
   end
 
-  -- self.npc.isActive = true
-  -- DebugUtil.printTableRecursively(self.npc, " ", 1, 1)
-
-  self.color = Farm.COLORS[index]
+  self.color = Farm.COLORS[colorIndex]
   if g_localPlayer ~= nil then
     self.x, self.y, self.z, self.rotY = g_localPlayer:getPosition()
     self.x = self.x + (1 * index)

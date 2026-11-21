@@ -19,5 +19,30 @@
         <text name="ContractorMod_NO_MORE_PASSENGER" text="Kein Platz mehr für einen Passagier in diesem Fahrzeug" />
         <text name="ContractorMod_WORKER_INACTIVE" text="Dieser Arbeiter ist derzeit inaktiv" />
         <text name="ContractorMod_SEAT_SWITCH_DISABLED" text="Sitzwechsel ist mit ContractorMod deaktiviert" />
+        <text name="ui_contractorModSettingsFrame" text="ContractorMod" />
+        <text name="ContractorMod_SETTINGS_TITLE" text="ContractorMod-Einstellungen" />
+        <text name="ContractorMod_WORKER" text="Arbeiter #%d" />
+        <text name="ContractorMod_RENAME" text="Umbenennen" />
+        <text name="ContractorMod_RENAME_TITLE" text="Neuer Name des Arbeiters" />
+        <text name="ContractorMod_LOCATION" text="Position" />
+        <text name="ContractorMod_STATE" text="Status" />
+        <text name="ContractorMod_REMAINING" text="Verbleibend" />
+        <text name="ContractorMod_SWITCH" text="Wechseln" />
+        <text name="ContractorMod_FIRE" text="Entlassen" />
+        <text name="ContractorMod_HIRE" text="Arbeiter einstellen" />
+        <text name="ContractorMod_ON_FOOT" text="Zu Fuß" />
+        <text name="ContractorMod_PASSENGER_IN" text="Beifahrer in %s" />
+        <text name="ContractorMod_DRIVING" text="Fährt %s" />
+        <text name="ContractorMod_COURSEPLAY" text="CoursePlay: %s" />
+        <text name="ContractorMod_AUTODRIVE" text="AutoDrive: %s" />
+        <text name="ContractorMod_AI_JOB" text="KI-Auftrag: %s" />
+        <text name="ContractorMod_MAX_WORKERS" text="Maximum von %d Arbeitern erreicht" />
+        <text name="ContractorMod_MIN_WORKERS" text="Mindestens ein Arbeiter muss bleiben" />
+        <text name="ContractorMod_WORKER_IN_VEHICLE" text="Arbeiter %s ist in einem Fahrzeug und kann nicht entlassen werden" />
+        <text name="ContractorMod_SWITCH_FIRST" text="Wechsle zuerst zu einem anderen Arbeiter" />
+        <text name="ContractorMod_WORKER_HIRED" text="Arbeiter %s eingestellt" />
+        <text name="ContractorMod_WORKER_FIRED" text="Arbeiter %s entlassen" />
+        <text name="ContractorMod_COL_WORKER" text="Arbeiter" />
+        <text name="ContractorMod_COL_ACTIONS" text="Aktionen" />
     </texts>
 </l10n>

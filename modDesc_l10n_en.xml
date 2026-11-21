@@ -19,5 +19,30 @@
         <text name="ContractorMod_NO_MORE_PASSENGER" text="No more space for a passenger in this vehicle" />
         <text name="ContractorMod_WORKER_INACTIVE" text="This worker is currently inactive" />
         <text name="ContractorMod_SEAT_SWITCH_DISABLED" text="Switching seat is disabled with ContractorMod" />
+        <text name="ui_contractorModSettingsFrame" text="ContractorMod" />
+        <text name="ContractorMod_SETTINGS_TITLE" text="ContractorMod settings" />
+        <text name="ContractorMod_WORKER" text="Worker #%d" />
+        <text name="ContractorMod_RENAME" text="Rename" />
+        <text name="ContractorMod_RENAME_TITLE" text="New worker name" />
+        <text name="ContractorMod_LOCATION" text="Location" />
+        <text name="ContractorMod_STATE" text="State" />
+        <text name="ContractorMod_REMAINING" text="Remaining" />
+        <text name="ContractorMod_SWITCH" text="Switch" />
+        <text name="ContractorMod_FIRE" text="Fire" />
+        <text name="ContractorMod_HIRE" text="Hire worker" />
+        <text name="ContractorMod_ON_FOOT" text="On foot" />
+        <text name="ContractorMod_PASSENGER_IN" text="Passenger in %s" />
+        <text name="ContractorMod_DRIVING" text="Driving %s" />
+        <text name="ContractorMod_COURSEPLAY" text="CoursePlay: %s" />
+        <text name="ContractorMod_AUTODRIVE" text="AutoDrive: %s" />
+        <text name="ContractorMod_AI_JOB" text="AI job: %s" />
+        <text name="ContractorMod_MAX_WORKERS" text="Maximum of %d workers reached" />
+        <text name="ContractorMod_MIN_WORKERS" text="At least one worker must remain" />
+        <text name="ContractorMod_WORKER_IN_VEHICLE" text="Worker %s is in a vehicle and cannot be fired" />
+        <text name="ContractorMod_SWITCH_FIRST" text="Switch to another worker first" />
+        <text name="ContractorMod_WORKER_HIRED" text="Worker %s hired" />
+        <text name="ContractorMod_WORKER_FIRED" text="Worker %s fired" />
+        <text name="ContractorMod_COL_WORKER" text="Worker" />
+        <text name="ContractorMod_COL_ACTIONS" text="Actions" />
     </texts>
 </l10n>

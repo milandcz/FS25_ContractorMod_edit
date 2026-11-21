@@ -3,7 +3,7 @@
     <!--
     This file is used only when creating new savegame.
     Following changes can be made here:
-     - You can set from 2 to 8 workers by changing numWorkers value.
+     - You can set from 1 to 10 workers by changing numWorkers value. The number of workers can also be changed in-game in the ContractorMod tab of the in-game menu.
      - Worker name can be changed here for default new game or in the wardrobe screen for each character.
      - for male character, use playerM/playerM.xml file
      - for female character, use /playerF/playerF.xml file
