@@ -30,8 +30,11 @@ function ContractorModSettingsFrame:onGuiSetupFinished()
   if self.headerIcon ~= nil and cmModDirectory ~= nil then
     self.headerIcon:setImageFilename(Utils.getFilename("icon_ContractorMod.dds", cmModDirectory))
   end
-  if self.workerRowTemplate ~= nil then
-    self.workerRowTemplate:setVisible(false)
+  if self.workerRowTemplateA ~= nil then
+    self.workerRowTemplateA:setVisible(false)
+  end
+  if self.workerRowTemplateB ~= nil then
+    self.workerRowTemplateB:setVisible(false)
   end
   if self.hireRowTemplate ~= nil then
     self.hireRowTemplate:setVisible(false)
@@ -60,7 +63,7 @@ function ContractorModSettingsFrame:update(dt)
 end
 
 function ContractorModSettingsFrame:updateWorkerRows()
-  if self.workersLayout == nil or self.workerRowTemplate == nil then
+  if self.workersLayout == nil or self.workerRowTemplateA == nil or self.workerRowTemplateB == nil then
     return
   end
   if ContractorMod.workers == nil then
@@ -79,14 +82,13 @@ function ContractorModSettingsFrame:rebuildWorkerRows()
   end
   self.workerRows = {}
   for i, worker in ipairs(ContractorMod.workers) do
-    local row = self.workerRowTemplate:clone(self.workersLayout)
+    local template = self.workerRowTemplateA
+    if i % 2 == 0 then
+      template = self.workerRowTemplateB
+    end
+    local row = template:clone(self.workersLayout)
     row:setVisible(true)
     row.workerIndex = i
-    if i % 2 == 0 then
-      row:setImageColor(0.30, 0.30, 0.30, 1)
-    else
-      row:setImageColor(0.22, 0.22, 0.22, 1)
-    end
     local renameButton = row:getDescendantByName("renameButton")
     if renameButton ~= nil then
       renameButton.onClickCallback = function() self:onClickRenameWorker(i) end
@@ -105,11 +107,6 @@ function ContractorModSettingsFrame:rebuildWorkerRows()
   if self.hireRowTemplate ~= nil then
     local hireRow = self.hireRowTemplate:clone(self.workersLayout)
     hireRow:setVisible(true)
-    if (#ContractorMod.workers + 1) % 2 == 0 then
-      hireRow:setImageColor(0.30, 0.30, 0.30, 1)
-    else
-      hireRow:setImageColor(0.22, 0.22, 0.22, 1)
-    end
     local hireButton = hireRow:getDescendantByName("hireButton")
     if hireButton ~= nil then
       hireButton.onClickCallback = function() self:onClickHireWorker() end
