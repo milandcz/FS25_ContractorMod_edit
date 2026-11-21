@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI name="contractorModSettingsFrame">
     <GuiProfiles>
-        <Profile name="cmHeaderContainer" extends="emptyPanel" with="anchorTopStretchingX">
+        <Profile name="cmHeaderContainer" extends="baseReference" with="anchorTopStretchingX">
             <height value="32px"/>
             <position value="0px -100px"/>
             <absoluteSizeOffset value="15px 0px"/>
@@ -11,7 +11,7 @@
             <position value="0px -140px"/>
             <absoluteSizeOffset value="15px 160px"/>
         </Profile>
-        <Profile name="cmWorkerRow" extends="emptyPanel" with="anchorTopStretchingX">
+        <Profile name="cmWorkerRow" extends="baseReference" with="anchorTopStretchingX">
             <height value="32px"/>
             <imageColor value="$preset_fs25_colorGrey"/>
         </Profile>
@@ -48,10 +48,6 @@
             <textColor value="$preset_fs25_colorMainLight"/>
             <textDisabledColor value="$preset_colorDisabled"/>
         </Profile>
-        <Profile name="cmSliderBox" extends="fs25_listSliderBox" with="anchorTopStretchingX pivotTopRight">
-            <position value="28px -140px"/>
-            <absoluteSizeOffset value="0px 160px"/>
-        </Profile>
     </GuiProfiles>
     <GuiElement profile="fs25_menuContainer">
         <GuiElement profile="fs25_menuHeaderPanel">
@@ -67,7 +63,7 @@
             <Text profile="cmHeaderCell" position="915px 0px" size="130px 32px" text="$l10n_ContractorMod_REMAINING"/>
             <Text profile="cmHeaderCell" position="1055px 0px" size="270px 32px" text="$l10n_ContractorMod_COL_ACTIONS"/>
         </Bitmap>
-        <ScrollingLayout profile="cmWorkersLayout" id="workersLayout" flowDirection="vertical" numFlows="1">
+        <BoxLayout profile="cmWorkersLayout" id="workersLayout" flowDirection="vertical" numFlows="1">
             <Bitmap id="workerRowTemplateA" profile="cmWorkerRowA" visible="false">
                 <Button name="renameButton" profile="cmActionButton" position="5px 2px" size="240px 28px" text=""/>
                 <Text name="locationText" profile="cmRowText" position="255px 4px" size="280px 24px"/>
@@ -87,9 +83,6 @@
             <Bitmap id="hireRowTemplate" profile="cmWorkerRow" visible="false">
                 <Button name="hireButton" profile="cmActionButton" position="1195px 2px" size="130px 28px" text="$l10n_ContractorMod_HIRE"/>
             </Bitmap>
-        </ScrollingLayout>
+        </BoxLayout>
     </GuiElement>
-    <ThreePartBitmap profile="cmSliderBox">
-        <Slider profile="fs25_listSlider" dataElementId="workersLayout"/>
-    </ThreePartBitmap>
 </GUI>
