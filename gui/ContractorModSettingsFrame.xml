@@ -5,6 +5,7 @@
             <height value="32px"/>
             <position value="0px -100px"/>
             <absoluteSizeOffset value="15px 0px"/>
+            <imageColor value="0.13 0.13 0.13 1"/>
         </Profile>
         <Profile name="cmWorkersLayout" extends="emptyPanel" with="anchorStretchingYLeft pivotTopLeft">
             <position value="0px -140px"/>
@@ -12,7 +13,7 @@
         </Profile>
         <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopStretchingX">
             <height value="32px"/>
-            <imageColor value="$preset_fs25_colorGrey"/>
+            <imageColor value="0.22 0.22 0.22 1"/>
         </Profile>
         <Profile name="cmHeaderCell" extends="baseReference">
             <height value="32px"/>
@@ -20,7 +21,7 @@
             <textSize value="15px"/>
             <textBold value="true"/>
             <textUpperCase value="true"/>
-            <textColor value="$preset_colorWhite_50"/>
+            <textColor value="0.95 0.95 0.95 1"/>
             <textAlignment value="left"/>
             <textDisabledColor value="$preset_colorDisabled"/>
         </Profile>
@@ -53,13 +54,13 @@
             </Bitmap>
             <Text profile="fs25_menuHeaderTitle" text="$l10n_ContractorMod_SETTINGS_TITLE" size="500px 32px"/>
         </GuiElement>
-        <GuiElement profile="cmHeaderContainer">
+        <Bitmap profile="cmHeaderContainer">
             <Text profile="cmHeaderCell" position="5px 0px" size="240px 32px" text="$l10n_ContractorMod_COL_WORKER"/>
             <Text profile="cmHeaderCell" position="255px 0px" size="280px 32px" text="$l10n_ContractorMod_LOCATION"/>
             <Text profile="cmHeaderCell" position="545px 0px" size="360px 32px" text="$l10n_ContractorMod_STATE"/>
             <Text profile="cmHeaderCell" position="915px 0px" size="130px 32px" text="$l10n_ContractorMod_REMAINING"/>
             <Text profile="cmHeaderCell" position="1055px 0px" size="270px 32px" text="$l10n_ContractorMod_COL_ACTIONS"/>
-        </GuiElement>
+        </Bitmap>
         <ScrollingLayout profile="cmWorkersLayout" id="workersLayout" flowDirection="vertical" numFlows="1">
             <Bitmap id="workerRowTemplate" profile="cmWorkerRow" visible="false">
                 <Button name="renameButton" profile="cmActionButton" position="5px 2px" size="240px 28px" text=""/>

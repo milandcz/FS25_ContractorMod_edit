@@ -82,6 +82,11 @@ function ContractorModSettingsFrame:rebuildWorkerRows()
     local row = self.workerRowTemplate:clone(self.workersLayout)
     row:setVisible(true)
     row.workerIndex = i
+    if i % 2 == 0 then
+      row:setImageColor(0.30, 0.30, 0.30, 1)
+    else
+      row:setImageColor(0.22, 0.22, 0.22, 1)
+    end
     local renameButton = row:getDescendantByName("renameButton")
     if renameButton ~= nil then
       renameButton.onClickCallback = function() self:onClickRenameWorker(i) end
@@ -100,6 +105,11 @@ function ContractorModSettingsFrame:rebuildWorkerRows()
   if self.hireRowTemplate ~= nil then
     local hireRow = self.hireRowTemplate:clone(self.workersLayout)
     hireRow:setVisible(true)
+    if (#ContractorMod.workers + 1) % 2 == 0 then
+      hireRow:setImageColor(0.30, 0.30, 0.30, 1)
+    else
+      hireRow:setImageColor(0.22, 0.22, 0.22, 1)
+    end
     local hireButton = hireRow:getDescendantByName("hireButton")
     if hireButton ~= nil then
       hireButton.onClickCallback = function() self:onClickHireWorker() end

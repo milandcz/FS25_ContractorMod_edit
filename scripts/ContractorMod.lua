@@ -651,10 +651,15 @@ function ContractorMod:addWorker()
   local activeVehicle = ContractorMod:getWorkerVehicle(activeWorker)
   local x, y, z = ax, ay, az
   if activeVehicle ~= nil and activeVehicle.rootNode ~= nil then
-    x, y, z = getWorldTranslation(activeVehicle.rootNode)
+    local vx, _, vz = getWorldTranslation(activeVehicle.rootNode)
+    local rx, _, rz = localDirectionToWorld(activeVehicle.rootNode, 1, 0, 0)
+    local fx, _, fz = localDirectionToWorld(activeVehicle.rootNode, 0, 0, 1)
+    x = vx + rx * 7 + fx * 3
+    z = vz + rz * 7 + fz * 3
+  else
+    x = x + 2
+    z = z + 1
   end
-  x = x + 2
-  z = z + 1
   local terrainHeight = getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
   local _, _, colY, _ = RaycastUtil.raycastClosest(x, terrainHeight + 2, z, 0, -1, 0, 2, CollisionFlag.STATIC_OBJECT + CollisionFlag.ROAD)
   y = (colY or terrainHeight) + 0.1
