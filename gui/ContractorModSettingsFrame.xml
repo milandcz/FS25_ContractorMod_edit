@@ -5,7 +5,7 @@
             <height value="32px"/>
             <position value="0px -100px"/>
             <absoluteSizeOffset value="15px 0px"/>
-            <imageColor value="0.08 0.08 0.08 1"/>
+            <imageColor value="$preset_fs25_colorGreyDark_50"/>
         </Profile>
         <Profile name="cmWorkersLayout" extends="emptyPanel" with="anchorStretchingYLeft pivotTopLeft">
             <position value="0px -140px"/>
@@ -13,13 +13,13 @@
         </Profile>
         <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopStretchingX">
             <height value="32px"/>
-            <imageColor value="0.20 0.20 0.20 1"/>
+            <imageColor value="$preset_fs25_colorGrey"/>
         </Profile>
         <Profile name="cmWorkerRowA" extends="cmWorkerRow">
-            <imageColor value="0.23 0.23 0.23 1"/>
+            <imageColor value="$preset_fs25_colorGrey"/>
         </Profile>
         <Profile name="cmWorkerRowB" extends="cmWorkerRow">
-            <imageColor value="0.17 0.17 0.17 1"/>
+            <imageColor value="$preset_fs25_colorGreyDark_50"/>
         </Profile>
         <Profile name="cmHeaderCell" extends="baseReference">
             <height value="32px"/>
@@ -27,7 +27,7 @@
             <textSize value="15px"/>
             <textBold value="true"/>
             <textUpperCase value="true"/>
-            <textColor value="0.95 0.95 0.95 1"/>
+            <textColor value="$preset_colorWhite_50"/>
             <textAlignment value="left"/>
             <textDisabledColor value="$preset_colorDisabled"/>
         </Profile>
