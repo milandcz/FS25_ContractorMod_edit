@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI name="contractorModSettingsFrame">
     <GuiProfiles>
-        <Profile name="cmHeaderContainer" extends="baseReference" with="anchorTopStretchingX">
+        <Profile name="cmHeaderContainer" extends="fs25_multiTextOptionContainer" with="anchorTopStretchingX">
             <height value="32px"/>
             <position value="0px -100px"/>
             <absoluteSizeOffset value="15px 0px"/>
@@ -11,7 +11,7 @@
             <position value="0px -140px"/>
             <absoluteSizeOffset value="15px 160px"/>
         </Profile>
-        <Profile name="cmWorkerRow" extends="baseReference" with="anchorTopStretchingX">
+        <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopStretchingX">
             <height value="32px"/>
             <imageColor value="$preset_fs25_colorGrey"/>
         </Profile>
