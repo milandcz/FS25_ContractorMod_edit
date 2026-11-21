@@ -729,7 +729,7 @@ function ContractorMod:removeWorker(index)
 end
 
 function ContractorMod:setWorkerName(worker, name)
-  if worker == nil or name == nil or name == "" then
+  if worker == nil or type(name) ~= "string" or name == "" then
     return
   end
   worker.name = name

@@ -44,5 +44,7 @@
         <text name="ContractorMod_SWITCH_FIRST" text="Nejprve přepni na jinou postavu" />
         <text name="ContractorMod_WORKER_HIRED" text="Postava %s najata" />
         <text name="ContractorMod_WORKER_FIRED" text="Postava %s propuštěna" />
+        <text name="ContractorMod_COL_WORKER" text="Zaměstnanec" />
+        <text name="ContractorMod_COL_ACTIONS" text="Akce" />
     </texts>
 </l10n>

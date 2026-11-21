@@ -119,22 +119,22 @@ function ContractorModSettingsFrame:refreshWorkerRows()
     if index ~= nil then
       local worker = ContractorMod.workers[index]
       if worker ~= nil then
-        local rowTitle = row:getDescendantByName("rowTitle")
-        if rowTitle ~= nil then
-          rowTitle:setText(string.format(g_i18n:getText("ContractorMod_WORKER"), index) .. " - " .. worker.name)
+        local renameButton = row:getDescendantByName("renameButton")
+        if renameButton ~= nil then
+          renameButton:setText(string.format(g_i18n:getText("ContractorMod_WORKER"), index) .. " - " .. tostring(worker.name))
         end
         local locationText = row:getDescendantByName("locationText")
         if locationText ~= nil then
-          locationText:setText(g_i18n:getText("ContractorMod_LOCATION") .. ": " .. ContractorMod:getWorkerLocationText(worker))
+          locationText:setText(tostring(ContractorMod:getWorkerLocationText(worker)))
         end
         local state, remaining = ContractorMod:getWorkerStateTexts(worker)
         local stateText = row:getDescendantByName("stateText")
         if stateText ~= nil then
-          stateText:setText(g_i18n:getText("ContractorMod_STATE") .. ": " .. state)
+          stateText:setText(tostring(state))
         end
         local remainingText = row:getDescendantByName("remainingText")
         if remainingText ~= nil then
-          remainingText:setText(g_i18n:getText("ContractorMod_REMAINING") .. ": " .. remaining)
+          remainingText:setText(tostring(remaining))
         end
         local switchButton = row:getDescendantByName("switchButton")
         if switchButton ~= nil then
@@ -157,12 +157,12 @@ function ContractorModSettingsFrame:onClickRenameWorker(workerIndex)
   if worker == nil then
     return
   end
-  TextInputDialog.show(function(text, confirmed)
-    if confirmed and text ~= nil and text ~= "" then
+  TextInputDialog.show(function(_, text, clickOk)
+    if clickOk and type(text) == "string" and text ~= "" then
       ContractorMod:setWorkerName(worker, text)
       self:updateWorkerRows()
     end
-  end, self, worker.name, g_i18n:getText("ContractorMod_RENAME_TITLE"), nil, 24)
+  end, self, tostring(worker.name), g_i18n:getText("ContractorMod_RENAME_TITLE"), nil, 24)
 end
 
 function ContractorModSettingsFrame:onClickSwitchWorker(workerIndex)
