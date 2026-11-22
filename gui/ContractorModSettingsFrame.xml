@@ -4,11 +4,11 @@
         <Profile name="cmHeaderContainer" extends="fs25_multiTextOptionContainer" with="anchorTopLeft">
             <width value="2000px"/>
             <height value="32px"/>
-            <position value="0px -100px"/>
+            <position value="0px 0px"/>
             <imageColor value="$preset_fs25_colorGreyDark_50"/>
         </Profile>
         <Profile name="cmWorkersLayout" extends="emptyPanel" with="anchorTopLeft pivotTopLeft">
-            <position value="0px -140px"/>
+            <position value="0px -100px"/>
             <size value="2000px 600px"/>
         </Profile>
         <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopLeft">
@@ -32,12 +32,14 @@
             <textAlignment value="left"/>
             <textDisabledColor value="$preset_colorDisabled"/>
         </Profile>
+        <Profile name="cmHeaderCellRight" extends="cmHeaderCell" with="anchorTopRight"/>
         <Profile name="cmRowText" extends="baseReference" with="anchorStretchingYLeft">
             <textBold value="false"/>
             <textSize value="15px"/>
             <textColor value="$preset_fs25_colorMainLight"/>
             <textDisabledColor value="$preset_colorDisabled"/>
         </Profile>
+        <Profile name="cmRowTextRight" extends="cmRowText" with="anchorTopRight"/>
         <Profile name="cmActionButton" extends="baseReference" with="anchorTopLeft">
             <height value="28px"/>
             <imageColor value="0 0 0 0"/>
@@ -49,6 +51,13 @@
             <textColor value="$preset_fs25_colorMainLight"/>
             <textDisabledColor value="$preset_colorDisabled"/>
         </Profile>
+        <Profile name="cmActionButtonRight" extends="cmActionButton" with="anchorTopRight"/>
+        <Profile name="cmFireButton" extends="cmActionButton" with="anchorTopRight">
+            <textSize value="18px"/>
+            <textColor value="1 0 0 1"/>
+            <textFocusedColor value="1 0.3 0.3 1"/>
+            <textHighlightedColor value="1 0.3 0.3 1"/>
+        </Profile>
     </GuiProfiles>
     <GuiElement profile="fs25_menuContainer">
         <GuiElement profile="fs25_menuHeaderPanel">
@@ -57,32 +66,32 @@
             </Bitmap>
             <Text profile="fs25_menuHeaderTitle" text="$l10n_ContractorMod_SETTINGS_TITLE" size="500px 32px"/>
         </GuiElement>
-        <Bitmap profile="cmHeaderContainer">
-            <Text profile="cmHeaderCell" position="5px 0px" size="230px 32px" text="$l10n_ContractorMod_COL_WORKER"/>
-            <Text profile="cmHeaderCell" position="245px 0px" size="260px 32px" text="$l10n_ContractorMod_LOCATION"/>
-            <Text profile="cmHeaderCell" position="515px 0px" size="330px 32px" text="$l10n_ContractorMod_STATE"/>
-            <Text profile="cmHeaderCell" position="855px 0px" size="120px 32px" text="$l10n_ContractorMod_REMAINING"/>
-            <Text profile="cmHeaderCell" position="985px 0px" size="270px 32px" text="$l10n_ContractorMod_COL_ACTIONS"/>
-        </Bitmap>
         <BoxLayout profile="cmWorkersLayout" id="workersLayout" flowDirection="vertical" numFlows="1">
+            <Bitmap profile="cmHeaderContainer">
+                <Text profile="cmHeaderCell" position="5px 0px" size="230px 32px" text="$l10n_ContractorMod_COL_WORKER"/>
+                <Text profile="cmHeaderCell" position="245px 0px" size="260px 32px" text="$l10n_ContractorMod_LOCATION"/>
+                <Text profile="cmHeaderCell" position="515px 0px" size="330px 32px" text="$l10n_ContractorMod_STATE"/>
+                <Text profile="cmHeaderCellRight" position="-415px 0px" size="120px 32px" text="$l10n_ContractorMod_REMAINING"/>
+                <Text profile="cmHeaderCellRight" position="-285px 0px" size="275px 32px" text="$l10n_ContractorMod_COL_ACTIONS"/>
+            </Bitmap>
             <Bitmap id="workerRowTemplateA" profile="cmWorkerRowA" visible="false">
                 <Button name="renameButton" profile="cmActionButton" position="5px 2px" size="230px 28px" text=""/>
                 <Text name="locationText" profile="cmRowText" position="245px 4px" size="260px 24px"/>
                 <Text name="stateText" profile="cmRowText" position="515px 4px" size="330px 24px"/>
-                <Text name="remainingText" profile="cmRowText" position="855px 4px" size="120px 24px"/>
-                <Button name="switchButton" profile="cmActionButton" position="985px 2px" size="130px 28px" text="$l10n_ContractorMod_SWITCH"/>
-                <Button name="fireButton" profile="cmActionButton" position="1125px 2px" size="130px 28px" text="$l10n_ContractorMod_FIRE"/>
+                <Text name="remainingText" profile="cmRowTextRight" position="-415px 4px" size="120px 24px"/>
+                <Button name="switchButton" profile="cmActionButtonRight" position="-285px 2px" size="130px 28px" text="$l10n_ContractorMod_SWITCH"/>
+                <Button name="fireButton" profile="cmFireButton" position="-140px 2px" size="130px 28px" text="$l10n_ContractorMod_FIRE"/>
             </Bitmap>
             <Bitmap id="workerRowTemplateB" profile="cmWorkerRowB" visible="false">
                 <Button name="renameButton" profile="cmActionButton" position="5px 2px" size="230px 28px" text=""/>
                 <Text name="locationText" profile="cmRowText" position="245px 4px" size="260px 24px"/>
                 <Text name="stateText" profile="cmRowText" position="515px 4px" size="330px 24px"/>
-                <Text name="remainingText" profile="cmRowText" position="855px 4px" size="120px 24px"/>
-                <Button name="switchButton" profile="cmActionButton" position="985px 2px" size="130px 28px" text="$l10n_ContractorMod_SWITCH"/>
-                <Button name="fireButton" profile="cmActionButton" position="1125px 2px" size="130px 28px" text="$l10n_ContractorMod_FIRE"/>
+                <Text name="remainingText" profile="cmRowTextRight" position="-415px 4px" size="120px 24px"/>
+                <Button name="switchButton" profile="cmActionButtonRight" position="-285px 2px" size="130px 28px" text="$l10n_ContractorMod_SWITCH"/>
+                <Button name="fireButton" profile="cmFireButton" position="-140px 2px" size="130px 28px" text="$l10n_ContractorMod_FIRE"/>
             </Bitmap>
             <Bitmap id="hireRowTemplate" profile="cmWorkerRow" visible="false">
-                <Button name="hireButton" profile="cmActionButton" position="1125px 2px" size="130px 28px" text="$l10n_ContractorMod_HIRE"/>
+                <Button name="hireButton" profile="cmActionButtonRight" position="-140px 2px" size="130px 28px" text="$l10n_ContractorMod_HIRE"/>
             </Bitmap>
         </BoxLayout>
     </GuiElement>

@@ -128,7 +128,7 @@ function ContractorModSettingsFrame:refreshWorkerRows()
       if worker ~= nil then
         local renameButton = row:getDescendantByName("renameButton")
         if renameButton ~= nil then
-          renameButton:setText(string.format(g_i18n:getText("ContractorMod_WORKER"), index) .. " - " .. tostring(worker.name))
+          renameButton:setText("#" .. index .. " - " .. tostring(worker.name))
         end
         local locationText = row:getDescendantByName("locationText")
         if locationText ~= nil then
