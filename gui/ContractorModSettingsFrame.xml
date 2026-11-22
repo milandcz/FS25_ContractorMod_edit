@@ -11,7 +11,8 @@
             <position value="0px -140px"/>
             <size value="2000px 600px"/>
         </Profile>
-        <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopStretchingX">
+        <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopLeft">
+            <width value="2000px"/>
             <height value="32px"/>
             <imageColor value="$preset_fs25_colorGrey"/>
         </Profile>
