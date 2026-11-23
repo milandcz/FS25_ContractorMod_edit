@@ -18,6 +18,10 @@ function ContractorModSettingsFrame.new()
 end
 
 function ContractorModSettingsFrame:delete()
+  if self.headerRow ~= nil then
+    self.headerRow:delete()
+    self.headerRow = nil
+  end
   for _, row in ipairs(self.workerRows) do
     row:delete()
   end
@@ -29,6 +33,9 @@ function ContractorModSettingsFrame:onGuiSetupFinished()
   ContractorModSettingsFrame:superClass().onGuiSetupFinished(self)
   if self.headerIcon ~= nil and cmModDirectory ~= nil then
     self.headerIcon:setImageFilename(Utils.getFilename("icon_ContractorMod.dds", cmModDirectory))
+  end
+  if self.headerRowTemplate ~= nil then
+    self.headerRowTemplate:setVisible(false)
   end
   if self.workerRowTemplateA ~= nil then
     self.workerRowTemplateA:setVisible(false)
@@ -77,10 +84,20 @@ function ContractorModSettingsFrame:updateWorkerRows()
 end
 
 function ContractorModSettingsFrame:rebuildWorkerRows()
+  if self.headerRow ~= nil then
+    self.headerRow:delete()
+    self.headerRow = nil
+  end
   for _, row in ipairs(self.workerRows) do
     row:delete()
   end
   self.workerRows = {}
+  if self.headerRowTemplate ~= nil and self.workersLayout ~= nil then
+    local headerRow = self.headerRowTemplate:clone(self.workersLayout)
+    headerRow:setVisible(true)
+    pcall(FocusManager.loadElementFromCustomValues, FocusManager, headerRow)
+    self.headerRow = headerRow
+  end
   for i, worker in ipairs(ContractorMod.workers) do
     local template = self.workerRowTemplateA
     if i % 2 == 0 then

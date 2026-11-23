@@ -2,17 +2,17 @@
 <GUI name="contractorModSettingsFrame">
     <GuiProfiles>
         <Profile name="cmHeaderContainer" extends="fs25_multiTextOptionContainer" with="anchorTopLeft">
-            <width value="1280px"/>
+            <width value="1600px"/>
             <height value="32px"/>
             <position value="0px 0px"/>
             <imageColor value="$preset_fs25_colorGreyDark_50"/>
         </Profile>
         <Profile name="cmWorkersLayout" extends="emptyPanel" with="anchorTopLeft pivotTopLeft">
             <position value="0px -100px"/>
-            <size value="1280px 600px"/>
+            <size value="1600px 600px"/>
         </Profile>
         <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopLeft">
-            <width value="1280px"/>
+            <width value="1600px"/>
             <height value="32px"/>
             <imageColor value="$preset_fs25_colorGrey"/>
         </Profile>
@@ -67,7 +67,7 @@
             <Text profile="fs25_menuHeaderTitle" text="$l10n_ContractorMod_SETTINGS_TITLE" size="500px 32px"/>
         </GuiElement>
         <BoxLayout profile="cmWorkersLayout" id="workersLayout" flowDirection="vertical" numFlows="1">
-            <Bitmap profile="cmHeaderContainer">
+            <Bitmap id="headerRowTemplate" profile="cmHeaderContainer" visible="false">
                 <Text profile="cmHeaderCell" position="5px 0px" size="230px 32px" text="$l10n_ContractorMod_COL_WORKER"/>
                 <Text profile="cmHeaderCell" position="245px 0px" size="260px 32px" text="$l10n_ContractorMod_LOCATION"/>
                 <Text profile="cmHeaderCell" position="515px 0px" size="330px 32px" text="$l10n_ContractorMod_STATE"/>
