@@ -1,5 +1,9 @@
 MY UPDATE
 -------------
+23-NOV-2026 - v0.2.0
+Added a ContractorMod tab to the in-game menu (Esc/Enter during a running game) for real-time worker management: hire (max 10 workers, a newly hired worker spawns next to the active character), fire (blocked while the worker is in a vehicle), rename, switch to a worker, and a per-worker table with location (coordinates or vehicle name), state (CoursePlay course / AutoDrive task / AI job / driving / on foot) and remaining time. Switch hotkeys for workers 9 and 10 were added.
+Trigger prompts (e.g. interactive control on machines) no longer leak to other workers when switching characters: trigger-based activatables are dropped on switch once the new worker is out of interaction range.
+
 20-NOV-2026 - v0.1.0
 Fixed trigger detection for individual characters. Triggers are now detected only for the active character.
 
