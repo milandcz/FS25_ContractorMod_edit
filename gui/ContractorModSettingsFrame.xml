@@ -36,6 +36,7 @@
         <Profile name="cmRowText" extends="baseReference" with="anchorStretchingYLeft">
             <textBold value="false"/>
             <textSize value="15px"/>
+            <textAlignment value="left"/>
             <textColor value="$preset_fs25_colorMainLight"/>
             <textDisabledColor value="$preset_colorDisabled"/>
         </Profile>
