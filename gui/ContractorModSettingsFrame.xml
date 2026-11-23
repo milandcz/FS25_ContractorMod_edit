@@ -22,7 +22,7 @@
         <Profile name="cmWorkerRowB" extends="cmWorkerRow">
             <imageColor value="$preset_fs25_colorGreyDark_50"/>
         </Profile>
-        <Profile name="cmHeaderCell" extends="baseReference">
+        <Profile name="cmHeaderCell" extends="baseReference" with="anchorStretchingYLeft">
             <height value="32px"/>
             <imageColor value="0 0 0 0"/>
             <textSize value="15px"/>
@@ -72,7 +72,7 @@
                 <Text profile="cmHeaderCell" position="245px 0px" size="260px 32px" text="$l10n_ContractorMod_LOCATION"/>
                 <Text profile="cmHeaderCell" position="515px 0px" size="330px 32px" text="$l10n_ContractorMod_STATE"/>
                 <Text profile="cmHeaderCellRight" position="-415px 0px" size="120px 32px" text="$l10n_ContractorMod_REMAINING"/>
-                <Text profile="cmHeaderCellRight" position="-285px 0px" size="275px 32px" text="$l10n_ContractorMod_COL_ACTIONS"/>
+                <Text profile="cmHeaderCellRight" position="-10px 0px" size="405px 32px" text="$l10n_ContractorMod_COL_ACTIONS"/>
             </Bitmap>
             <Bitmap id="workerRowTemplateA" profile="cmWorkerRowA" visible="false">
                 <Button name="renameButton" profile="cmActionButton" position="5px 2px" size="230px 28px" text=""/>
