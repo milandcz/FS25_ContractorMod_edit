@@ -2,17 +2,17 @@
 <GUI name="contractorModSettingsFrame">
     <GuiProfiles>
         <Profile name="cmHeaderContainer" extends="fs25_multiTextOptionContainer" with="anchorTopLeft">
-            <width value="2000px"/>
+            <width value="1280px"/>
             <height value="32px"/>
             <position value="0px 0px"/>
             <imageColor value="$preset_fs25_colorGreyDark_50"/>
         </Profile>
         <Profile name="cmWorkersLayout" extends="emptyPanel" with="anchorTopLeft pivotTopLeft">
             <position value="0px -100px"/>
-            <size value="2000px 600px"/>
+            <size value="1280px 600px"/>
         </Profile>
         <Profile name="cmWorkerRow" extends="fs25_multiTextOptionContainer" with="anchorTopLeft">
-            <width value="2000px"/>
+            <width value="1280px"/>
             <height value="32px"/>
             <imageColor value="$preset_fs25_colorGrey"/>
         </Profile>
