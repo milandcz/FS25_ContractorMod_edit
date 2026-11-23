@@ -415,6 +415,7 @@ function ContractorMod:resetOutOfRangeActivatables(maxDistance)
     return
   end
   local entryMaxDistance = 10
+  local triggerRegisterMaxDistance = 15
   local x, y, z = g_localPlayer:getPosition()
   for activatable, entry in pairs(ContractorMod.registeredActivatables) do
     if activatable ~= nil then
@@ -425,9 +426,13 @@ function ContractorMod:resetOutOfRangeActivatables(maxDistance)
           nodeDistance = distance
         end
       end
+      local range = maxDistance
+      if type(entry) == "table" and entry.distance ~= nil and entry.distance <= triggerRegisterMaxDistance then
+        range = entryMaxDistance
+      end
       local outOfRange = false
       if nodeDistance ~= nil then
-        outOfRange = nodeDistance > maxDistance
+        outOfRange = nodeDistance > range
       elseif type(entry) == "table" and entry.x ~= nil then
         outOfRange = MathUtil.vector3Length(x - entry.x, y - entry.y, z - entry.z) > entryMaxDistance
       end
