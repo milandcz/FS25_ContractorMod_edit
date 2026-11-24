@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="107">
   <author>yumi</author>
-  <version>0.1.6.0</version>
+  <version>0.2.0.0</version>
   <title>
     <en>ContractorMod</en>
   </title>
@@ -108,6 +108,8 @@ O arquivo ContractorMod.xml também contém configuração para passageiros para
     <action name="ContractorMod_WORKER6" category="ONFOOT VEHICLE"/>
     <action name="ContractorMod_WORKER7" category="ONFOOT VEHICLE"/>
     <action name="ContractorMod_WORKER8" category="ONFOOT VEHICLE"/>
+    <action name="ContractorMod_WORKER9" category="ONFOOT VEHICLE"/>
+    <action name="ContractorMod_WORKER10" category="ONFOOT VEHICLE"/>
   </actions>
   <inputBinding>
     <actionBinding action="ContractorMod_WORKER1">
@@ -133,6 +135,12 @@ O arquivo ContractorMod.xml também contém configuração para passageiros para
     </actionBinding>
     <actionBinding action="ContractorMod_WORKER8">
         <binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_8" axisComponent="+" inputComponent="+" index="1"/>
+    </actionBinding>
+    <actionBinding action="ContractorMod_WORKER9">
+        <binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_9" axisComponent="+" inputComponent="+" index="1"/>
+    </actionBinding>
+    <actionBinding action="ContractorMod_WORKER10">
+        <binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_0" axisComponent="+" inputComponent="+" index="1"/>
     </actionBinding>
   </inputBinding>
 

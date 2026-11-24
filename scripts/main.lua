@@ -16,6 +16,7 @@ source(Utils.getFilename("scripts/cmWardrobeScreen.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/cmWorkshopScreen.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/ContractorMod.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/ContractorModWorker.lua", g_currentModDirectory))
+source(Utils.getFilename("scripts/cmSettingsFrame.lua", g_currentModDirectory))
 -- source(Utils.getFilename("scripts/ContractorModTestRunner.lua", g_currentModDirectory))
 -- TODO:
 -- Using first person camera when driving can lead to activate passenger camera if any, then crash

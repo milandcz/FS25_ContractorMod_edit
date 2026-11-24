@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <texts>
+        <text name="input_ContractorMod_NEXTWORKER" text="Přepnout na další postavu" />
+        <text name="input_ContractorMod_PREVWORKER" text="Přepnout na předchozí postavu" />
+        <text name="input_ContractorMod_WORKER1" text="Přepnout na postavu 1" />
+        <text name="input_ContractorMod_WORKER2" text="Přepnout na postavu 2" />
+        <text name="input_ContractorMod_WORKER3" text="Přepnout na postavu 3" />
+        <text name="input_ContractorMod_WORKER4" text="Přepnout na postavu 4" />
+        <text name="input_ContractorMod_WORKER5" text="Přepnout na postavu 5" />
+        <text name="input_ContractorMod_WORKER6" text="Přepnout na postavu 6" />
+        <text name="input_ContractorMod_WORKER7" text="Přepnout na postavu 7" />
+        <text name="input_ContractorMod_WORKER8" text="Přepnout na postavu 8" />
+        <text name="input_ContractorMod_WORKER9" text="Přepnout na postavu 9" />
+        <text name="input_ContractorMod_WORKER10" text="Přepnout na postavu 10" />
+        <text name="action_ContractorMod_SWITCH" text="Přepnout na tuto postavu" />
+        <text name="action_ContractorMod_DEACTIVATE" text="Deaktivovat tuto postavu" />
+        <text name="action_ContractorMod_ACTIVATE" text="Aktivovat tuto postavu" />
+        <text name="ContractorMod_VEHICLE_NOT_FREE" text="Vozidlo je již ovládáno jinou postavou" />
+        <text name="ContractorMod_WORKER_STOP" text="Vozidlo se zastaví při jeho opuštění" />
+        <text name="ContractorMod_NO_MORE_PASSENGER" text="V tomto vozidle už není místo pro dalšího cestujícího" />
+        <text name="ContractorMod_WORKER_INACTIVE" text="Tato postava je aktuálně neaktivní" />
+        <text name="ContractorMod_SEAT_SWITCH_DISABLED" text="Přepínání sedadel je v ContractorMod zakázáno" />
+        <text name="ui_contractorModSettingsFrame" text="ContractorMod" />
+        <text name="ContractorMod_SETTINGS_TITLE" text="Nastavení ContractorMod" />
+        <text name="ContractorMod_WORKER" text="Zaměstnanec #%d" />
+        <text name="ContractorMod_RENAME" text="Přejmenovat" />
+        <text name="ContractorMod_RENAME_TITLE" text="Nové jméno postavy" />
+        <text name="ContractorMod_LOCATION" text="Umístění" />
+        <text name="ContractorMod_STATE" text="Stav" />
+        <text name="ContractorMod_REMAINING" text="Zbývá" />
+        <text name="ContractorMod_SWITCH" text="Přepnout" />
+        <text name="ContractorMod_FIRE" text="Propustit" />
+        <text name="ContractorMod_HIRE" text="Najmout postavu" />
+        <text name="ContractorMod_ON_FOOT" text="Pěšky" />
+        <text name="ContractorMod_PASSENGER_IN" text="Cestující v %s" />
+        <text name="ContractorMod_DRIVING" text="Řídí %s" />
+        <text name="ContractorMod_COURSEPLAY" text="CoursePlay: %s" />
+        <text name="ContractorMod_AUTODRIVE" text="AutoDrive: %s" />
+        <text name="ContractorMod_AI_JOB" text="AI práce: %s" />
+        <text name="ContractorMod_MAX_WORKERS" text="Dosaženo maxima %d postav" />
+        <text name="ContractorMod_MIN_WORKERS" text="Alespoň jedna postava musí zůstat" />
+        <text name="ContractorMod_WORKER_IN_VEHICLE" text="Postavu %s nelze propustit, je ve stroji" />
+        <text name="ContractorMod_SWITCH_FIRST" text="Nejprve přepni na jinou postavu" />
+        <text name="ContractorMod_WORKER_HIRED" text="Postava %s najata" />
+        <text name="ContractorMod_WORKER_FIRED" text="Postava %s propuštěna" />
+        <text name="ContractorMod_COL_WORKER" text="Zaměstnanec" />
+        <text name="ContractorMod_COL_ACTIONS" text="Akce" />
+    </texts>
+</l10n>

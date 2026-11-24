@@ -1,5 +1,7 @@
 ContractorMod = {}
 ContractorMod.debug = false --true --
+ContractorMod.MAX_WORKERS = 10
+ContractorMod.MIN_WORKERS = 1
 
 -- KO: Driver exists with passenger
 local modDirectory = g_currentModDirectory
@@ -154,7 +156,14 @@ end
 function ContractorMod:getWorkerFromNPC(npc)
   if ContractorMod.debug then print("ContractorMod:getWorkerFromNPC()") end
   if npc ~= nil then
-    if string.sub(npc.name, 1, 6) == "HELPER" and string.len(npc.name) > 6 then
+    if ContractorMod.workers ~= nil then
+      for _, worker in pairs(ContractorMod.workers) do
+        if worker.npc == npc then
+          return worker
+        end
+      end
+    end
+    if npc.name ~= nil and string.sub(npc.name, 1, 6) == "HELPER" and string.len(npc.name) > 6 then
       local workerId = tonumber(string.sub(npc.name, 7))
       if workerId ~= nil then
         local worker = ContractorMod.workers[workerId]
@@ -189,7 +198,7 @@ function ContractorMod:initFromSave()
       xml:delete()
       return false
     end
-    local num = xml:getInt("ContractorMod.workers#numWorkers") or 0
+    local num = math.min(xml:getInt("ContractorMod.workers#numWorkers") or 0, ContractorMod.MAX_WORKERS)
     for i = 1, num do
         local key = string.format("ContractorMod.workers.worker(%d)", i-1)
         local name = xml:getString(key.."#name")
@@ -263,7 +272,7 @@ function ContractorMod:initFromParameters()
     else
       return false
     end
-    local num = xml:getInt("ContractorMod.workers#numWorkers") or 0
+    local num = math.min(xml:getInt("ContractorMod.workers#numWorkers") or 0, ContractorMod.MAX_WORKERS)
     for i = 1, num do
       local key = string.format("ContractorMod.workers.worker(%d)", i-1)
       local name = xml:getString(key.."#name")
@@ -390,8 +399,8 @@ function ContractorMod:activateWorker(actionName, keyStatus)
 	if ContractorMod.debug then print("ContractorMod:activateWorker") end
   if ContractorMod.debug then print("actionName "..tostring(actionName)) end
   if string.sub(actionName, 1, 20) == "ContractorMod_WORKER" then
-    local workerIndex = tonumber(string.sub(actionName, -1))
-    if ContractorMod.numWorkers >= workerIndex and workerIndex ~= ContractorMod.currentID then
+    local workerIndex = tonumber(string.sub(actionName, 21))
+    if workerIndex ~= nil and ContractorMod.numWorkers >= workerIndex and workerIndex ~= ContractorMod.currentID then
       if self:setCurrentContractorModWorker(workerIndex) == false then
         g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_CRITICAL, g_i18n:getText("ContractorMod_WORKER_INACTIVE") .. " (" .. ContractorMod.workers[workerIndex].name .. ")")
       end
@@ -406,6 +415,7 @@ function ContractorMod:resetOutOfRangeActivatables(maxDistance)
     return
   end
   local entryMaxDistance = 10
+  local triggerRegisterMaxDistance = 15
   local x, y, z = g_localPlayer:getPosition()
   for activatable, entry in pairs(ContractorMod.registeredActivatables) do
     if activatable ~= nil then
@@ -416,9 +426,13 @@ function ContractorMod:resetOutOfRangeActivatables(maxDistance)
           nodeDistance = distance
         end
       end
+      local range = maxDistance
+      if type(entry) == "table" and entry.distance ~= nil and entry.distance <= triggerRegisterMaxDistance then
+        range = entryMaxDistance
+      end
       local outOfRange = false
       if nodeDistance ~= nil then
-        outOfRange = nodeDistance > maxDistance
+        outOfRange = nodeDistance > range
       elseif type(entry) == "table" and entry.x ~= nil then
         outOfRange = MathUtil.vector3Length(x - entry.x, y - entry.y, z - entry.z) > entryMaxDistance
       end
@@ -592,6 +606,253 @@ function ContractorMod:manageSellConfigVehicle(vehicle)
 end
 
 
+function ContractorMod:notify(text, critical)
+  if g_currentMission ~= nil then
+    if critical then
+      g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_CRITICAL, text)
+    else
+      g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_INFO, text)
+    end
+  end
+end
+
+function ContractorMod:getFreeNPCIndex()
+  local maxWorkers = ContractorMod.MAX_WORKERS or 10
+  if ContractorMod.workers ~= nil and g_npcManager ~= nil then
+    local used = {}
+    for _, worker in pairs(ContractorMod.workers) do
+      if worker.npc ~= nil and worker.npc.name ~= nil then
+        used[worker.npc.name] = true
+      end
+    end
+    for i = 1, maxWorkers do
+      local npc = g_npcManager:getNPCByName("HELPER" .. i)
+      if npc ~= nil and not used[npc.name] then
+        return i
+      end
+    end
+  end
+  return nil
+end
+
+function ContractorMod:addWorker()
+  if ContractorMod.workers == nil or #ContractorMod.workers >= ContractorMod.MAX_WORKERS or ContractorMod:getFreeNPCIndex() == nil then
+    ContractorMod:notify(string.format(g_i18n:getText("ContractorMod_MAX_WORKERS"), ContractorMod.MAX_WORKERS))
+    return nil
+  end
+  local index = #ContractorMod.workers + 1
+  local name = string.format(g_i18n:getText("ContractorMod_WORKER"), index)
+  local workerStyle = g_helperManager:getRandomHelperStyle()
+  local worker = ContractorModWorker:new(name, index, workerStyle)
+  if worker.npc == nil then
+    ContractorMod:notify(string.format(g_i18n:getText("ContractorMod_MAX_WORKERS"), ContractorMod.MAX_WORKERS), true)
+    return nil
+  end
+  table.insert(ContractorMod.workers, worker)
+  ContractorMod.numWorkers = #ContractorMod.workers
+  local activeWorker = ContractorMod.workers[ContractorMod.currentID]
+  local ax, ay, az = ContractorMod:getWorkerPosition(activeWorker)
+  local ayaw = ContractorMod:getWorkerYaw(activeWorker)
+  local activeVehicle = ContractorMod:getWorkerVehicle(activeWorker)
+  local x, y, z = ax, ay, az
+  if activeVehicle ~= nil and activeVehicle.rootNode ~= nil then
+    local vx, _, vz = getWorldTranslation(activeVehicle.rootNode)
+    local rx, _, rz = localDirectionToWorld(activeVehicle.rootNode, 1, 0, 0)
+    local fx, _, fz = localDirectionToWorld(activeVehicle.rootNode, 0, 0, 1)
+    x = vx + rx * 7 + fx * 3
+    z = vz + rz * 7 + fz * 3
+  else
+    x = x + 2
+    z = z + 1
+  end
+  local terrainHeight = getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
+  local _, _, colY, _ = RaycastUtil.raycastClosest(x, terrainHeight + 2, z, 0, -1, 0, 2, CollisionFlag.STATIC_OBJECT + CollisionFlag.ROAD)
+  y = (colY or terrainHeight) + 0.1
+  worker.x, worker.y, worker.z = x, y, z
+  worker.yaw = ayaw or 0.0
+  local spot = NPCSpot.create(tostring(g_time), worker.npc, worker.x, worker.y, worker.z, 0, 0, 0, false)
+  spot:activate()
+  spot.isAvailable = true
+  g_npcManager:addSpot(spot)
+  worker.npc:setSpot(spot)
+  worker:setYawInstant(worker.yaw)
+  ContractorMod:notify(string.format(g_i18n:getText("ContractorMod_WORKER_HIRED"), worker.name))
+  return worker
+end
+
+function ContractorMod:removeWorker(index)
+  index = tonumber(index)
+  if ContractorMod.workers == nil or index == nil then
+    return false
+  end
+  local worker = ContractorMod.workers[index]
+  if worker == nil then
+    return false
+  end
+  if #ContractorMod.workers <= ContractorMod.MIN_WORKERS then
+    ContractorMod:notify(g_i18n:getText("ContractorMod_MIN_WORKERS"))
+    return false
+  end
+  if ContractorMod:getWorkerVehicle(worker) ~= nil then
+    ContractorMod:notify(string.format(g_i18n:getText("ContractorMod_WORKER_IN_VEHICLE"), worker.name))
+    return false
+  end
+  if index == ContractorMod.currentID then
+    local target = nil
+    for i = 1, #ContractorMod.workers do
+      if i ~= index and ContractorMod.workers[i] ~= nil and ContractorMod.workers[i].active then
+        target = i
+        break
+      end
+    end
+    if target == nil or ContractorMod:setCurrentContractorModWorker(target) == false then
+      ContractorMod:notify(g_i18n:getText("ContractorMod_SWITCH_FIRST"), true)
+      return false
+    end
+  end
+  if worker.npc ~= nil then
+    local spot = worker.npc:getSpot()
+    if spot ~= nil then
+      worker.npc:setSpot(nil)
+      g_npcManager:removeSpot(spot)
+    end
+    if g_currentMission ~= nil and g_currentMission.activatableObjectsSystem ~= nil and worker.npc.activatable ~= nil then
+      g_currentMission.activatableObjectsSystem:removeActivatable(worker.npc.activatable)
+    end
+    worker.npc.x = 0
+    worker.npc.y = -200
+    worker.npc.z = 0
+    worker.npc.isActive = false
+    worker.npc:updateVisibility()
+  end
+  local name = worker.name
+  table.remove(ContractorMod.workers, index)
+  for i = index, #ContractorMod.workers do
+    ContractorMod.workers[i].index = i
+  end
+  ContractorMod.numWorkers = #ContractorMod.workers
+  if ContractorMod.currentID > index then
+    ContractorMod.currentID = ContractorMod.currentID - 1
+  end
+  ContractorMod:notify(string.format(g_i18n:getText("ContractorMod_WORKER_FIRED"), name))
+  return true
+end
+
+function ContractorMod:setWorkerName(worker, name)
+  if worker == nil or type(name) ~= "string" or name == "" then
+    return
+  end
+  worker.name = name
+  if worker.npc ~= nil then
+    worker.npc.title = name
+  end
+  if worker.index == ContractorMod.currentID and g_currentMission ~= nil then
+    g_currentMission.nickname = name
+    g_currentMission.playerNickname = name
+  end
+end
+
+function ContractorMod:getWorkerLocationText(worker)
+  local vehicle = ContractorMod:getWorkerVehicle(worker)
+  if vehicle ~= nil then
+    if vehicle.getFullName ~= nil then
+      return vehicle:getFullName()
+    end
+    if vehicle.getName ~= nil then
+      return vehicle:getName()
+    end
+    return tostring(vehicle)
+  end
+  local x, y, z = ContractorMod:getWorkerPosition(worker)
+  return string.format("%.1f / %.1f / %.1f", Utils.getNoNil(x, 0), Utils.getNoNil(y, 0), Utils.getNoNil(z, 0))
+end
+
+function ContractorMod:formatRemainingTime(value)
+  local seconds = value
+  if value > 10000 then
+    seconds = value / 1000
+  end
+  local h = math.floor(seconds / 3600)
+  local m = math.floor((seconds % 3600) / 60)
+  local s = math.floor(seconds % 60)
+  return string.format("%d:%02d:%02d", h, m, s)
+end
+
+function ContractorMod:getJobRemainingTimeText(vehicle)
+  if vehicle == nil then
+    return ""
+  end
+  local sources = { vehicle.ad, vehicle.spec_autodrive, vehicle.cp, vehicle.spec_courseplay, vehicle.spec_aiJobVehicle }
+  for _, src in ipairs(sources) do
+    if type(src) == "table" then
+      for _, field in ipairs({ "remainingTime", "timeRemaining", "remainingTimeMs", "eta" }) do
+        local value = src[field]
+        if type(value) == "number" and value >= 0 then
+          return ContractorMod:formatRemainingTime(value)
+        end
+      end
+    end
+  end
+  return ""
+end
+
+function ContractorMod:getWorkerStateTexts(worker)
+  local vehicle = ContractorMod:getWorkerVehicle(worker)
+  if vehicle == nil then
+    return g_i18n:getText("ContractorMod_ON_FOOT"), ""
+  end
+  local vehicleName = tostring(vehicle)
+  if vehicle.getFullName ~= nil then
+    vehicleName = vehicle:getFullName()
+  elseif vehicle.getName ~= nil then
+    vehicleName = vehicle:getName()
+  end
+  local seat = ContractorMod:getWorkerSeat(worker)
+  local aiActive = vehicle.getIsAIActive ~= nil and vehicle:getIsAIActive()
+  if aiActive then
+    if vehicle.getCurrentCpCourseName ~= nil then
+      local ok, courseName = pcall(vehicle.getCurrentCpCourseName, vehicle)
+      if ok and courseName ~= nil and courseName ~= "" then
+        return string.format(g_i18n:getText("ContractorMod_COURSEPLAY"), tostring(courseName)), ContractorMod:getJobRemainingTimeText(vehicle)
+      end
+    end
+    local ad = vehicle.ad
+    if ad == nil then
+      ad = vehicle.spec_autodrive
+    end
+    if type(ad) == "table" then
+      local taskInfo = nil
+      if ad.stateModule ~= nil and ad.stateModule.currentTaskInfo ~= nil and ad.stateModule.currentTaskInfo ~= "" then
+        taskInfo = ad.stateModule.currentTaskInfo
+      elseif ad.taskModule ~= nil and ad.taskModule.getActiveTask ~= nil then
+        local ok, task = pcall(ad.taskModule.getActiveTask, ad.taskModule)
+        if ok and task ~= nil and task.taskType ~= nil then
+          taskInfo = tostring(task.taskType)
+        end
+      end
+      if taskInfo == nil then
+        taskInfo = "AutoDrive"
+      end
+      return string.format(g_i18n:getText("ContractorMod_AUTODRIVE"), tostring(taskInfo)), ContractorMod:getJobRemainingTimeText(vehicle)
+    end
+    local job = nil
+    if vehicle.spec_aiJobVehicle ~= nil then
+      job = vehicle.spec_aiJobVehicle.job
+    end
+    if job ~= nil and job.getTitle ~= nil then
+      local ok, title = pcall(job.getTitle, job)
+      if ok and title ~= nil then
+        return string.format(g_i18n:getText("ContractorMod_AI_JOB"), tostring(title)), ""
+      end
+    end
+    return vehicleName, ""
+  end
+  if seat ~= nil then
+    return string.format(g_i18n:getText("ContractorMod_PASSENGER_IN"), vehicleName), ""
+  end
+  return string.format(g_i18n:getText("ContractorMod_DRIVING"), vehicleName), ""
+end
+
 function ContractorMod:dumpWorkers()
   if ContractorMod.debug then print("ContractorMod:dumpWorkers()") end
   if ContractorMod.workers ~= nil then
@@ -610,5 +871,7 @@ function ContractorMod:dumpWorkers()
   end
 end
 addConsoleCommand("cmDumpWorkers", "Dump ContractorMod workers for debug", "dumpWorkers", ContractorMod)
+addConsoleCommand("cmHireWorker", "Hire a new worker next to the active one", "addWorker", ContractorMod)
+addConsoleCommand("cmFireWorker", "Fire the worker with the given index", "removeWorker", ContractorMod)
 
     

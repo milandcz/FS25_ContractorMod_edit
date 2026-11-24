@@ -1,5 +1,9 @@
 MY UPDATE
 -------------
+23-NOV-2026 - v0.2.0
+Added a ContractorMod tab to the in-game menu (Esc/Enter during a running game) for real-time worker management: hire (max 10 workers, a newly hired worker spawns next to the active character), fire (blocked while the worker is in a vehicle), rename, switch to a worker, and a per-worker table with location (coordinates or vehicle name), state (CoursePlay course / AutoDrive task / AI job / driving / on foot) and remaining time. Switch hotkeys for workers 9 and 10 were added.
+Trigger prompts (e.g. interactive control on machines) no longer leak to other workers when switching characters: trigger-based activatables are dropped on switch once the new worker is out of interaction range.
+
 20-NOV-2026 - v0.1.0
 Fixed trigger detection for individual characters. Triggers are now detected only for the active character.
 
@@ -25,3 +29,8 @@ Characters can be seen on the minimap when activating default category (the last
 TO FIX: Name, gender, color, body, hair, accessories and number of characters can be changed in ContractorMod.xml file located in modSettings directory for new games.
 Once a game has been saved, they can be changed in ContractorMod.xml file present in related savegame folder.
 TO IMPLEMENT: ContractorMod.xml file also contains configuration for passengers for mods vehicles. You can add your own mods here.
+
+
+IN-GAME SETTINGS TAB
+---------------------
+The in-game menu (Esc/Enter during a running game) has a ContractorMod tab where the number of workers can be changed in real time (min 1, max 10): hire and fire workers, rename them, see their location (coordinates or vehicle), state (CoursePlay course / AutoDrive task / AI job / driving / on foot), remaining time, and switch to them or fire them. A hired worker spawns next to the active character; a worker inside a vehicle cannot be fired.
