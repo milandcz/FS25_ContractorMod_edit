@@ -1,5 +1,8 @@
 MY UPDATE
 -------------
+24-NOV-2026
+Fixed interrupting assigned work when leaving a vehicle driven by a worker: AutoDrive is now stopped via stopAutoDrive (previously only the base AI job was stopped, so an AutoDrive-driven machine kept driving), and CoursePlay / FollowMe / classic AI jobs are stopped via stopCurrentAIJob on the root vehicle. The ContractorMod tab now shows the state only for the system that is actually driving (CoursePlay course via getIsCpActive, AutoDrive task via ad.stateModule:isActive, otherwise the AI job title) and the remaining time for CoursePlay (course ETA from the CP drive strategy) and AutoDrive (remaining drive time from the AD state module).
+
 23-NOV-2026 - v0.2.0
 Added a ContractorMod tab to the in-game menu (Esc/Enter during a running game) for real-time worker management: hire (max 10 workers, a newly hired worker spawns next to the active character), fire (blocked while the worker is in a vehicle), rename, switch to a worker, and a per-worker table with location (coordinates or vehicle name), state (CoursePlay course / AutoDrive task / AI job / driving / on foot) and remaining time. Switch hotkeys for workers 9 and 10 were added.
 Trigger prompts (e.g. interactive control on machines) no longer leak to other workers when switching characters: trigger-based activatables are dropped on switch once the new worker is out of interaction range.
