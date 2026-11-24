@@ -752,16 +752,25 @@ function ContractorMod:setWorkerName(worker, name)
   end
 end
 
+function ContractorMod:getVehicleDisplayName(vehicle)
+  local name = nil
+  if vehicle.getFullName ~= nil then
+    name = vehicle:getFullName()
+  elseif vehicle.getName ~= nil then
+    name = vehicle:getName()
+  else
+    name = tostring(vehicle)
+  end
+  if type(name) == "string" then
+    name = string.gsub(name, "%s*%b()%s*$", "")
+  end
+  return name
+end
+
 function ContractorMod:getWorkerLocationText(worker)
   local vehicle = ContractorMod:getWorkerVehicle(worker)
   if vehicle ~= nil then
-    if vehicle.getFullName ~= nil then
-      return vehicle:getFullName()
-    end
-    if vehicle.getName ~= nil then
-      return vehicle:getName()
-    end
-    return tostring(vehicle)
+    return ContractorMod:getVehicleDisplayName(vehicle)
   end
   local x, y, z = ContractorMod:getWorkerPosition(worker)
   return string.format("%.1f / %.1f / %.1f", Utils.getNoNil(x, 0), Utils.getNoNil(y, 0), Utils.getNoNil(z, 0))
@@ -894,12 +903,7 @@ function ContractorMod:getWorkerStateTexts(worker)
   if vehicle == nil then
     return g_i18n:getText("ContractorMod_ON_FOOT"), ""
   end
-  local vehicleName = tostring(vehicle)
-  if vehicle.getFullName ~= nil then
-    vehicleName = vehicle:getFullName()
-  elseif vehicle.getName ~= nil then
-    vehicleName = vehicle:getName()
-  end
+  local vehicleName = ContractorMod:getVehicleDisplayName(vehicle)
   local seat = ContractorMod:getWorkerSeat(worker)
   if ContractorMod:isCpActive(vehicle) then
     local courseName = ""
@@ -919,7 +923,7 @@ function ContractorMod:getWorkerStateTexts(worker)
       end
     end
     if courseName == "" then
-      courseName = "CoursePlay"
+      courseName = "CP"
     end
     return string.format(g_i18n:getText("ContractorMod_COURSEPLAY"), courseName), ContractorMod:getJobRemainingTimeText(vehicle)
   end
@@ -945,7 +949,7 @@ function ContractorMod:getWorkerStateTexts(worker)
       end
     end
     if taskInfo == "" then
-      taskInfo = "AutoDrive"
+      taskInfo = "AD"
     end
     return string.format(g_i18n:getText("ContractorMod_AUTODRIVE"), taskInfo), ContractorMod:getJobRemainingTimeText(vehicle)
   end
@@ -965,9 +969,9 @@ function ContractorMod:getWorkerStateTexts(worker)
     return string.format(g_i18n:getText("ContractorMod_AI_JOB"), title), ""
   end
   if seat ~= nil then
-    return string.format(g_i18n:getText("ContractorMod_PASSENGER_IN"), vehicleName), ""
+    return g_i18n:getText("ContractorMod_PASSENGER_IN"), ""
   end
-  return string.format(g_i18n:getText("ContractorMod_DRIVING"), vehicleName), ""
+  return g_i18n:getText("ContractorMod_DRIVING"), ""
 end
 
 function ContractorMod:dumpWorkers()

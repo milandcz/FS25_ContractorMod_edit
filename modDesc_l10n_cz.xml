@@ -33,10 +33,10 @@
         <text name="ContractorMod_FIRE" text="Propustit" />
         <text name="ContractorMod_HIRE" text="Najmout postavu" />
         <text name="ContractorMod_ON_FOOT" text="Pěšky" />
-        <text name="ContractorMod_PASSENGER_IN" text="Cestující v %s" />
-        <text name="ContractorMod_DRIVING" text="Řídí %s" />
-        <text name="ContractorMod_COURSEPLAY" text="CoursePlay: %s" />
-        <text name="ContractorMod_AUTODRIVE" text="AutoDrive: %s" />
+        <text name="ContractorMod_PASSENGER_IN" text="Cestující" />
+        <text name="ContractorMod_DRIVING" text="Řídí" />
+        <text name="ContractorMod_COURSEPLAY" text="CP: %s" />
+        <text name="ContractorMod_AUTODRIVE" text="AD: %s" />
         <text name="ContractorMod_AI_JOB" text="AI práce: %s" />
         <text name="ContractorMod_MAX_WORKERS" text="Dosaženo maxima %d postav" />
         <text name="ContractorMod_MIN_WORKERS" text="Alespoň jedna postava musí zůstat" />
