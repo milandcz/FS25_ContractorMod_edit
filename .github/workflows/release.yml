@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tagged commit
+        uses: actions/checkout@v4
+
+      - name: Build mod zip from repository contents
+        run: |
+          zip -r FS25_ContractorMod.zip . -x ".git/*" -x ".gitignore" -x ".github/*" -x "FS25_ContractorMod.zip"
+          unzip -l FS25_ContractorMod.zip
+
+      - name: Create GitHub release with the zip as asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" FS25_ContractorMod.zip \
+            --title "$GITHUB_REF_NAME" \
+            --notes "FS25_ContractorMod $GITHUB_REF_NAME. Download FS25_ContractorMod.zip and place it in the mods folder (Documents/My Games/FarmingSimulator2025/mods)."

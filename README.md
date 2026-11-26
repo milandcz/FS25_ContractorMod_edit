@@ -1,6 +1,11 @@
+DOWNLOAD
+-------------
+Download the latest FS25_ContractorMod.zip from GitHub Releases: https://github.com/milandcz/FS25_ContractorMod_edit/releases
+The zip is built automatically by a GitHub Actions workflow (`.github/workflows/release.yml`) from the tagged commit whenever a `v*` tag is pushed, so it always contains exactly the files in this repository. The zip itself is no longer committed to the repository.
+
 MY UPDATE
 -------------
-24-NOV-2026
+24-NOV-2026 - v0.2.1.0
 Fixed interrupting assigned work when leaving a vehicle driven by a worker: AutoDrive is now stopped via stopAutoDrive (previously only the base AI job was stopped, so an AutoDrive-driven machine kept driving), and CoursePlay / FollowMe / classic AI jobs are stopped via stopCurrentAIJob on the root vehicle. The ContractorMod tab now shows the state only for the system that is actually driving (CoursePlay course via getIsCpActive, AutoDrive task via ad.stateModule:isActive, otherwise the AI job title) and the remaining time for CoursePlay (course ETA from the CP drive strategy) and AutoDrive (remaining drive time from the AD state module).
 Settings tab tweaks: all texts in the table (header, location, state, remaining time, buttons) are now vertically centered in the 32px rows (textVerticalAlignment=middle, full-row height; the right-anchored remaining-time cell now uses anchorStretchingYRight like the other cells), the location column no longer shows the trailing "(worker name)" part of the vehicle name, the state column uses CP / AD abbreviations for CoursePlay / AutoDrive and no longer appends the vehicle name to Driving / Passenger states.
 

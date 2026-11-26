@@ -1,0 +1,3 @@
+# The mod zip is a build artifact: it is built by .github/workflows/release.yml
+# from the tagged commit and attached to the GitHub Release as an asset.
+/FS25_ContractorMod.zip
