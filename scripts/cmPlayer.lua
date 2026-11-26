@@ -16,10 +16,16 @@ function cmPlayer:ManageLeaveVehicle(controlledVehicle)
     
     if controlledVehicle ~= nil then
         local currentWorker = ContractorMod.workers[ContractorMod.currentID]
-        if ContractorMod.shouldStopWorker and currentWorker.currentSeat == nil then
-            if controlledVehicle:getIsAIActive() then
+        if currentWorker ~= nil and ContractorMod.shouldStopWorker and currentWorker.currentSeat == nil then
+            local rootVehicle = controlledVehicle
+            if controlledVehicle.getRootVehicle ~= nil then
+                local root = controlledVehicle:getRootVehicle()
+                if root ~= nil then
+                    rootVehicle = root
+                end
+            end
+            if ContractorMod.stopVehicleWork ~= nil and ContractorMod:stopVehicleWork(rootVehicle) then
                 g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_INFO, g_i18n:getText("ContractorMod_WORKER_STOP"))
-                controlledVehicle:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
             end
         end
     end

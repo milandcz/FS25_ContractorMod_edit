@@ -752,43 +752,145 @@ function ContractorMod:setWorkerName(worker, name)
   end
 end
 
+function ContractorMod:getVehicleDisplayName(vehicle)
+  local name = nil
+  if vehicle.getFullName ~= nil then
+    name = vehicle:getFullName()
+  elseif vehicle.getName ~= nil then
+    name = vehicle:getName()
+  else
+    name = tostring(vehicle)
+  end
+  if type(name) == "string" then
+    name = string.gsub(name, "%s*%b()%s*$", "")
+  end
+  return name
+end
+
 function ContractorMod:getWorkerLocationText(worker)
   local vehicle = ContractorMod:getWorkerVehicle(worker)
   if vehicle ~= nil then
-    if vehicle.getFullName ~= nil then
-      return vehicle:getFullName()
-    end
-    if vehicle.getName ~= nil then
-      return vehicle:getName()
-    end
-    return tostring(vehicle)
+    return ContractorMod:getVehicleDisplayName(vehicle)
   end
   local x, y, z = ContractorMod:getWorkerPosition(worker)
   return string.format("%.1f / %.1f / %.1f", Utils.getNoNil(x, 0), Utils.getNoNil(y, 0), Utils.getNoNil(z, 0))
 end
 
-function ContractorMod:formatRemainingTime(value)
-  local seconds = value
-  if value > 10000 then
-    seconds = value / 1000
-  end
+function ContractorMod:formatRemainingTime(seconds)
+  seconds = math.max(0, seconds or 0)
   local h = math.floor(seconds / 3600)
   local m = math.floor((seconds % 3600) / 60)
   local s = math.floor(seconds % 60)
   return string.format("%d:%02d:%02d", h, m, s)
 end
 
+function ContractorMod:getAdModule(vehicle)
+  if vehicle == nil then
+    return nil
+  end
+  local ad = vehicle.ad
+  if type(ad) ~= "table" then
+    ad = vehicle.spec_autodrive
+  end
+  if type(ad) ~= "table" then
+    return nil
+  end
+  return ad
+end
+
+function ContractorMod:isAdActive(vehicle)
+  local ad = ContractorMod:getAdModule(vehicle)
+  if ad == nil or type(ad.stateModule) ~= "table" or ad.stateModule.isActive == nil then
+    return false
+  end
+  local ok, active = pcall(ad.stateModule.isActive, ad.stateModule)
+  return ok and active == true
+end
+
+function ContractorMod:isCpActive(vehicle)
+  if vehicle == nil or vehicle.getIsCpActive == nil then
+    return false
+  end
+  local ok, active = pcall(vehicle.getIsCpActive, vehicle)
+  return ok and active == true
+end
+
+function ContractorMod:getAiJob(vehicle)
+  if vehicle ~= nil and vehicle.getJob ~= nil then
+    local ok, job = pcall(vehicle.getJob, vehicle)
+    if ok then
+      return job
+    end
+  end
+  if vehicle ~= nil and type(vehicle.spec_aiJobVehicle) == "table" then
+    return vehicle.spec_aiJobVehicle.job
+  end
+  return nil
+end
+
+-- Stop assigned work on the vehicle (AutoDrive, CoursePlay, FollowMe, classic AI job), returns true if any was active
+function ContractorMod:stopVehicleWork(vehicle)
+  if vehicle == nil then
+    return false
+  end
+  local stopped = false
+  if ContractorMod:isAdActive(vehicle) and vehicle.stopAutoDrive ~= nil then
+    if vehicle.isServer then
+      pcall(vehicle.stopAutoDrive, vehicle)
+    elseif AutoDriveStartStopEvent ~= nil and g_client ~= nil and g_client.getServerConnection ~= nil then
+      pcall(function()
+        g_client:getServerConnection():sendEvent(AutoDriveStartStopEvent.new(vehicle, AutoDriveStartStopEvent.TYPE_STOP, false, false))
+      end)
+    end
+    stopped = true
+  end
+  if vehicle.getIsAIActive ~= nil and vehicle:getIsAIActive() and vehicle.stopCurrentAIJob ~= nil then
+    pcall(vehicle.stopCurrentAIJob, vehicle, AIMessageSuccessStoppedByUser.new())
+    stopped = true
+  end
+  return stopped
+end
+
 function ContractorMod:getJobRemainingTimeText(vehicle)
   if vehicle == nil then
     return ""
   end
-  local sources = { vehicle.ad, vehicle.spec_autodrive, vehicle.cp, vehicle.spec_courseplay, vehicle.spec_aiJobVehicle }
-  for _, src in ipairs(sources) do
-    if type(src) == "table" then
-      for _, field in ipairs({ "remainingTime", "timeRemaining", "remainingTimeMs", "eta" }) do
-        local value = src[field]
-        if type(value) == "number" and value >= 0 then
-          return ContractorMod:formatRemainingTime(value)
+  if ContractorMod:isAdActive(vehicle) then
+    local ad = ContractorMod:getAdModule(vehicle)
+    local value = nil
+    if vehicle.adGetRemainingDriveTime ~= nil then
+      local ok, v = pcall(vehicle.adGetRemainingDriveTime, vehicle)
+      if ok and type(v) == "number" then
+        value = v
+      end
+    end
+    if value == nil and ad.stateModule ~= nil and ad.stateModule.getRemainingDriveTime ~= nil then
+      local ok, v = pcall(ad.stateModule.getRemainingDriveTime, ad.stateModule)
+      if ok and type(v) == "number" then
+        value = v
+      end
+    end
+    if value ~= nil and value > 0 then
+      return ContractorMod:formatRemainingTime(value)
+    end
+    return ""
+  end
+  if ContractorMod:isCpActive(vehicle) and vehicle.getCpDriveStrategy ~= nil then
+    local ok, strategy = pcall(vehicle.getCpDriveStrategy, vehicle)
+    if ok and type(strategy) == "table" and strategy.remainingTime ~= nil then
+      local remainingTime = strategy.remainingTime
+      if type(remainingTime) == "number" and remainingTime > 0 then
+        return ContractorMod:formatRemainingTime(remainingTime)
+      end
+      if type(remainingTime) == "table" then
+        if type(remainingTime.time) == "number" and remainingTime.time > 0 then
+          return ContractorMod:formatRemainingTime(remainingTime.time)
+        end
+        if remainingTime.getText ~= nil then
+          local okText, text = pcall(remainingTime.getText, remainingTime)
+          if okText and type(text) == "string" and text ~= "" then
+            return text
+          end
         end
       end
     end
@@ -801,56 +903,75 @@ function ContractorMod:getWorkerStateTexts(worker)
   if vehicle == nil then
     return g_i18n:getText("ContractorMod_ON_FOOT"), ""
   end
-  local vehicleName = tostring(vehicle)
-  if vehicle.getFullName ~= nil then
-    vehicleName = vehicle:getFullName()
-  elseif vehicle.getName ~= nil then
-    vehicleName = vehicle:getName()
-  end
+  local vehicleName = ContractorMod:getVehicleDisplayName(vehicle)
   local seat = ContractorMod:getWorkerSeat(worker)
-  local aiActive = vehicle.getIsAIActive ~= nil and vehicle:getIsAIActive()
-  if aiActive then
+  if ContractorMod:isCpActive(vehicle) then
+    local courseName = ""
     if vehicle.getCurrentCpCourseName ~= nil then
-      local ok, courseName = pcall(vehicle.getCurrentCpCourseName, vehicle)
-      if ok and courseName ~= nil and courseName ~= "" then
-        return string.format(g_i18n:getText("ContractorMod_COURSEPLAY"), tostring(courseName)), ContractorMod:getJobRemainingTimeText(vehicle)
+      local ok, name = pcall(vehicle.getCurrentCpCourseName, vehicle)
+      if ok and name ~= nil and name ~= "" then
+        courseName = tostring(name)
       end
     end
-    local ad = vehicle.ad
-    if ad == nil then
-      ad = vehicle.spec_autodrive
-    end
-    if type(ad) == "table" then
-      local taskInfo = nil
-      if ad.stateModule ~= nil and ad.stateModule.currentTaskInfo ~= nil and ad.stateModule.currentTaskInfo ~= "" then
-        taskInfo = ad.stateModule.currentTaskInfo
-      elseif ad.taskModule ~= nil and ad.taskModule.getActiveTask ~= nil then
-        local ok, task = pcall(ad.taskModule.getActiveTask, ad.taskModule)
-        if ok and task ~= nil and task.taskType ~= nil then
-          taskInfo = tostring(task.taskType)
+    if courseName == "" then
+      local job = ContractorMod:getAiJob(vehicle)
+      if job ~= nil and job.getTitle ~= nil then
+        local ok, title = pcall(job.getTitle, job)
+        if ok and title ~= nil and title ~= "" then
+          courseName = tostring(title)
         end
       end
-      if taskInfo == nil then
-        taskInfo = "AutoDrive"
+    end
+    if courseName == "" then
+      courseName = "CP"
+    end
+    return string.format(g_i18n:getText("ContractorMod_COURSEPLAY"), courseName), ContractorMod:getJobRemainingTimeText(vehicle)
+  end
+  if ContractorMod:isAdActive(vehicle) then
+    local ad = ContractorMod:getAdModule(vehicle)
+    local taskInfo = ""
+    if ad.stateModule ~= nil and ad.stateModule.getCurrentLocalizedTaskInfo ~= nil then
+      local ok, info = pcall(ad.stateModule.getCurrentLocalizedTaskInfo, ad.stateModule)
+      if ok and type(info) == "string" then
+        taskInfo = info
       end
-      return string.format(g_i18n:getText("ContractorMod_AUTODRIVE"), tostring(taskInfo)), ContractorMod:getJobRemainingTimeText(vehicle)
     end
-    local job = nil
-    if vehicle.spec_aiJobVehicle ~= nil then
-      job = vehicle.spec_aiJobVehicle.job
+    if taskInfo == "" and ad.stateModule ~= nil and ad.stateModule.getCurrentTaskInfo ~= nil then
+      local ok, info = pcall(ad.stateModule.getCurrentTaskInfo, ad.stateModule)
+      if ok and type(info) == "string" then
+        taskInfo = info
+      end
     end
+    if taskInfo == "" and ad.stateModule ~= nil and ad.stateModule.getCurrentDestination ~= nil then
+      local ok, destination = pcall(ad.stateModule.getCurrentDestination, ad.stateModule)
+      if ok and type(destination) == "table" and destination.name ~= nil then
+        taskInfo = tostring(destination.name)
+      end
+    end
+    if taskInfo == "" then
+      taskInfo = "AD"
+    end
+    return string.format(g_i18n:getText("ContractorMod_AUTODRIVE"), taskInfo), ContractorMod:getJobRemainingTimeText(vehicle)
+  end
+  local aiActive = vehicle.getIsAIActive ~= nil and vehicle:getIsAIActive()
+  if aiActive then
+    local title = ""
+    local job = ContractorMod:getAiJob(vehicle)
     if job ~= nil and job.getTitle ~= nil then
-      local ok, title = pcall(job.getTitle, job)
-      if ok and title ~= nil then
-        return string.format(g_i18n:getText("ContractorMod_AI_JOB"), tostring(title)), ""
+      local ok, jobTitle = pcall(job.getTitle, job)
+      if ok and jobTitle ~= nil and jobTitle ~= "" then
+        title = tostring(jobTitle)
       end
     end
-    return vehicleName, ""
+    if title == "" then
+      title = vehicleName
+    end
+    return string.format(g_i18n:getText("ContractorMod_AI_JOB"), title), ""
   end
   if seat ~= nil then
-    return string.format(g_i18n:getText("ContractorMod_PASSENGER_IN"), vehicleName), ""
+    return g_i18n:getText("ContractorMod_PASSENGER_IN"), ""
   end
-  return string.format(g_i18n:getText("ContractorMod_DRIVING"), vehicleName), ""
+  return g_i18n:getText("ContractorMod_DRIVING"), ""
 end
 
 function ContractorMod:dumpWorkers()

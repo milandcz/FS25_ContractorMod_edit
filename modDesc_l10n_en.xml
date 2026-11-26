@@ -31,10 +31,10 @@
         <text name="ContractorMod_FIRE" text="Fire" />
         <text name="ContractorMod_HIRE" text="Hire worker" />
         <text name="ContractorMod_ON_FOOT" text="On foot" />
-        <text name="ContractorMod_PASSENGER_IN" text="Passenger in %s" />
-        <text name="ContractorMod_DRIVING" text="Driving %s" />
-        <text name="ContractorMod_COURSEPLAY" text="CoursePlay: %s" />
-        <text name="ContractorMod_AUTODRIVE" text="AutoDrive: %s" />
+        <text name="ContractorMod_PASSENGER_IN" text="Passenger" />
+        <text name="ContractorMod_DRIVING" text="Driving" />
+        <text name="ContractorMod_COURSEPLAY" text="CP: %s" />
+        <text name="ContractorMod_AUTODRIVE" text="AD: %s" />
         <text name="ContractorMod_AI_JOB" text="AI job: %s" />
         <text name="ContractorMod_MAX_WORKERS" text="Maximum of %d workers reached" />
         <text name="ContractorMod_MIN_WORKERS" text="At least one worker must remain" />
