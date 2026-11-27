@@ -20,6 +20,9 @@ SavegameController.onSaveComplete = Utils.prependedFunction(SavegameController.o
         local worker = ContractorMod.workers[i]
         local key = string.format(rootXmlKey .. ".workers.worker(%d)", i - 1)
         xmlFile:setString(key.."#name", worker.name)
+        if worker.poolId ~= nil then
+          xmlFile:setInt(key.."#poolId", worker.poolId)
+        end
         worker.playerStyle:saveToXMLFile(xmlFile, key .. ".style")
         local x, y, z = ContractorMod:getWorkerPosition(worker)
         local pos = Utils.getNoNil(x, "0.")..' '..Utils.getNoNil(y, "0.")..' '..Utils.getNoNil(z, "0.")
