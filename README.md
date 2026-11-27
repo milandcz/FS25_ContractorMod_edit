@@ -1,8 +1,3 @@
-DOWNLOAD
--------------
-Download the latest FS25_ContractorMod.zip from GitHub Releases: https://github.com/milandcz/FS25_ContractorMod_edit/releases
-The zip is built automatically by a GitHub Actions workflow (`.github/workflows/release.yml`) from the tagged commit whenever a `v*` tag is pushed, so it always contains exactly the files in this repository. The zip itself is no longer committed to the repository.
-
 MY UPDATE
 -------------
 24-NOV-2026 - v0.2.1.0
