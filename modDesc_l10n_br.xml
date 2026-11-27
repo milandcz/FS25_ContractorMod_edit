@@ -19,5 +19,7 @@
         <text name="ContractorMod_NO_MORE_PASSENGER" text="Não há mais espaço para um passageiro neste veículo" />
         <text name="ContractorMod_WORKER_INACTIVE" text="Este trabalhador está atualmente inativo" />
         <text name="ContractorMod_SEAT_SWITCH_DISABLED" text="Trocar de assento está desabilitado com ContractorMod" />
+        <text name="ContractorMod_FIRE_CONFIRM" text="Tem certeza de que deseja demitir %s?" />
+        <text name="ContractorMod_PLAYER_WORKER" text="O trabalhador #1 é o personagem do jogador e não pode ser demitido" />
     </texts>
 </l10n>
