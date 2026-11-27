@@ -1,12 +1,10 @@
 MY UPDATE
 -------------
 24-NOV-2026 - v0.2.1.0
-Fixed interrupting assigned work when leaving a vehicle driven by a worker: AutoDrive is now stopped via stopAutoDrive (previously only the base AI job was stopped, so an AutoDrive-driven machine kept driving), and CoursePlay / FollowMe / classic AI jobs are stopped via stopCurrentAIJob on the root vehicle. The ContractorMod tab now shows the state only for the system that is actually driving (CoursePlay course via getIsCpActive, AutoDrive task via ad.stateModule:isActive, otherwise the AI job title) and the remaining time for CoursePlay (course ETA from the CP drive strategy) and AutoDrive (remaining drive time from the AD state module).
-Settings tab tweaks: all texts in the table (header, location, state, remaining time, buttons) are now vertically centered in the 32px rows (textVerticalAlignment=middle, full-row height; the right-anchored remaining-time cell now uses anchorStretchingYRight like the other cells), the location column no longer shows the trailing "(worker name)" part of the vehicle name, the state column uses CP / AD abbreviations for CoursePlay / AutoDrive and no longer appends the vehicle name to Driving / Passenger states.
+Fixed interrupting assigned work when leaving a vehicle driven by a worker as AutoDrive/CoursePlay/FollowMe/classic AI jobs are stopped. The ContractorMod tab now shows the state only for the system that is actually driving and the remaining time for CP and AD.
 
 23-NOV-2026 - v0.2.0
-Added a ContractorMod tab to the in-game menu (Esc/Enter during a running game) for real-time worker management: hire (max 10 workers, a newly hired worker spawns next to the active character), fire (blocked while the worker is in a vehicle), rename, switch to a worker, and a per-worker table with location (coordinates or vehicle name), state (CoursePlay course / AutoDrive task / AI job / driving / on foot) and remaining time. Switch hotkeys for workers 9 and 10 were added.
-Trigger prompts (e.g. interactive control on machines) no longer leak to other workers when switching characters: trigger-based activatables are dropped on switch once the new worker is out of interaction range.
+Added a ContractorMod tab to the in-game menu (Esc/Enter during a running game) for real-time worker management: hire (max 10 workers, a newly hired worker spawns next to the active character), fire (blocked while the worker is in a vehicle), rename, switch to a worker, and a per-worker table with location (coordinates or vehicle name), state (CoursePlay course / AutoDrive task / AI job / driving / on foot) and remaining time.
 
 20-NOV-2026 - v0.1.0
 Fixed trigger detection for individual characters. Triggers are now detected only for the active character.
