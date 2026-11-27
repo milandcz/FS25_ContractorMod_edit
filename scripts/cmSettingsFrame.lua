@@ -166,7 +166,12 @@ function ContractorModSettingsFrame:refreshWorkerRows()
         end
         local fireButton = row:getDescendantByName("fireButton")
         if fireButton ~= nil then
-          fireButton:setDisabled(index == ContractorMod.PLAYER_WORKER_INDEX or ContractorMod:getWorkerVehicle(worker) ~= nil or #ContractorMod.workers <= ContractorMod.MIN_WORKERS)
+          if index == ContractorMod.PLAYER_WORKER_INDEX then
+            fireButton:setVisible(false)
+          else
+            fireButton:setVisible(true)
+            fireButton:setDisabled(ContractorMod:getWorkerVehicle(worker) ~= nil or #ContractorMod.workers <= ContractorMod.MIN_WORKERS)
+          end
         end
       end
     end
