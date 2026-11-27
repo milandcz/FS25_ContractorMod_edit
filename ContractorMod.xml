@@ -3,7 +3,7 @@
     <!--
     This file is used only when creating new savegame.
     Following changes can be made here:
-     - You can set from 1 to 10 workers by changing numWorkers value. The number of workers can also be changed in-game in the ContractorMod tab of the in-game menu.
+     - You can set from 1 to 10 workers by changing numWorkers value (default for a new savegame is 1, the player character). Additional workers can be hired in-game in the ContractorMod tab of the in-game menu; they are picked randomly from the characters defined below, each character at most once.
      - Worker name can be changed here for default new game or in the wardrobe screen for each character.
      - for male character, use playerM/playerM.xml file
      - for female character, use /playerF/playerF.xml file
@@ -11,7 +11,7 @@
     If you want to modify some element on a savegame, you can edit similar file in corresponding savegame directory
     enablePassenger can be set to false to disable passenger mode in case of any blocking bug.
     -->
-    <workers numWorkers="4" enablePassenger="true">
+    <workers numWorkers="1" enablePassenger="true">
         <worker name="Alex">
             <style filename="dataS/character/playerM/playerM.xml">
                 <facegear color="1"/>
@@ -130,6 +130,36 @@
                 <footwear color="1" name="workBoots1"/>
                 <hairStyle color="23" name="hair16"/>
                 <beard color="23" name="stubble_head02"/>
+            </style>
+        </worker>
+        <worker name="Ivan">
+            <style filename="dataS/character/playerM/playerM.xml">
+                <facegear color="2"/>
+                <onepiece color="1" name="empty"/>
+                <bottom color="2" name="jeanShorts"/>
+                <face color="1" name="head02"/>
+                <top color="11" name="caseih"/>
+                <gloves color="1" name="empty"/>
+                <headgear color="1" name="empty"/>
+                <glasses color="1" name="classic"/>
+                <footwear color="1" name="chelsea02"/>
+                <hairStyle color="20" name="hair04"/>
+                <beard color="20" name="stubble_head02"/>
+            </style>
+        </worker>
+        <worker name="Julia">
+            <style filename="dataS/character/playerF/playerF.xml">
+                <facegear color="1"/>
+                <onepiece color="1" name="empty"/>
+                <bottom color="1" name="equestrian"/>
+                <face color="1" name="head06"/>
+                <top color="9" name="windbreaker"/>
+                <gloves color="1" name="empty"/>
+                <headgear color="1" name="empty"/>
+                <glasses color="1" name="empty"/>
+                <footwear color="1" name="sportSneakers"/>
+                <hairStyle color="21" name="hair13"/>
+                <beard color="21"/>
             </style>
         </worker>
     </workers>

@@ -2,6 +2,7 @@ ContractorMod = {}
 ContractorMod.debug = false --true --
 ContractorMod.MAX_WORKERS = 10
 ContractorMod.MIN_WORKERS = 1
+ContractorMod.PLAYER_WORKER_INDEX = 1
 
 -- KO: Driver exists with passenger
 local modDirectory = g_currentModDirectory
@@ -44,8 +45,9 @@ end
 function ContractorMod:init()
   if ContractorMod.debug then print("ContractorMod:init()") end
     ContractorMod.currentID = 1
-    ContractorMod.numWorkers = 2
+    ContractorMod.numWorkers = 1
     ContractorMod.workers = {}
+    ContractorMod.characterPool = nil
     ContractorMod.shouldStopWorker = true
     ContractorMod.switching = false 
     ContractorMod.displayPlayerNames = true
@@ -67,41 +69,10 @@ function ContractorMod:init()
     ContractorMod.savegameFolderPath = savegameDir
     ContractorMod.ContractorModXmlFilePath = ContractorMod.savegameFolderPath .. '/ContractorMod.xml'
 
-    -- Try to load from savegame, else create default workers
+    -- Try to load from savegame, else create default workers (default: 1 worker, the player character)
     if not self:initFromSave() then
       if not self:initFromParameters() then
         table.insert(ContractorMod.workers, ContractorModWorker:new("Alex", 1, g_localPlayer.graphicsComponent:getStyle()))
-        local brendaStyle = g_helperManager:getRandomHelperStyle()
-        while brendaStyle:getIsMale() do
-            brendaStyle = g_helperManager:getRandomHelperStyle()
-        end
-        table.insert(ContractorMod.workers, ContractorModWorker:new("Brenda", 2, brendaStyle))
-        table.insert(ContractorMod.workers, ContractorModWorker:new("Chris", 3, g_helperManager:getRandomHelperStyle()))
-        local davidStyle = g_helperManager:getRandomHelperStyle()
-        while davidStyle:getIsMale() == false do
-            davidStyle = g_helperManager:getRandomHelperStyle()
-        end
-        table.insert(ContractorMod.workers, ContractorModWorker:new("David", 4, davidStyle))
-        local edStyle = g_helperManager:getRandomHelperStyle()
-        while edStyle:getIsMale() == false do
-            edStyle = g_helperManager:getRandomHelperStyle()
-        end
-        table.insert(ContractorMod.workers, ContractorModWorker:new("Ed", 5, edStyle))
-        local franckStyle = g_helperManager:getRandomHelperStyle()
-        while franckStyle:getIsMale() == false do
-            franckStyle = g_helperManager:getRandomHelperStyle()
-        end
-        table.insert(ContractorMod.workers, ContractorModWorker:new("Franck", 6, franckStyle))
-        local garyStyle = g_helperManager:getRandomHelperStyle()
-        while garyStyle:getIsMale() == false do
-            garyStyle = g_helperManager:getRandomHelperStyle()
-        end
-        table.insert(ContractorMod.workers, ContractorModWorker:new("Gary", 7, garyStyle))
-        local henryStyle = g_helperManager:getRandomHelperStyle()
-        while henryStyle:getIsMale() == false do
-            henryStyle = g_helperManager:getRandomHelperStyle()
-        end
-        table.insert(ContractorMod.workers, ContractorModWorker:new("Henry", 8, henryStyle))
         ContractorMod.numWorkers = #ContractorMod.workers
         ContractorMod.displaySettings = {
             characterName = {
@@ -635,6 +606,72 @@ function ContractorMod:getFreeNPCIndex()
   return nil
 end
 
+-- @doc Build a fingerprint string for a PlayerStyle so two styles can be compared
+function ContractorMod:getStyleFingerprint(style)
+  if style == nil or style.configs == nil then
+    return ""
+  end
+  local parts = { tostring(style.filename) }
+  for configName, config in pairs(style.configs) do
+    table.insert(parts, string.format("%s=%d,%d", configName, config.selectedItemIndex or 0, config.selectedColorIndex or 0))
+  end
+  table.sort(parts)
+  return table.concat(parts, "|")
+end
+
+-- @doc Load the pool of characters (name + style) defined in ContractorMod.xml, used for hiring new workers
+function ContractorMod:getCharacterPool()
+  if ContractorMod.characterPool ~= nil then
+    return ContractorMod.characterPool
+  end
+  ContractorMod.characterPool = {}
+  local xmlFilePath = nil
+  if modSettingsDir then
+    local settingsPath = modSettingsDir .. "/ContractorMod.xml"
+    if fileExists(settingsPath) then
+      xmlFilePath = settingsPath
+    end
+  end
+  if xmlFilePath == nil and modDirectory then
+    local modPath = modDirectory .. "/ContractorMod.xml"
+    if fileExists(modPath) then
+      xmlFilePath = modPath
+    end
+  end
+  if xmlFilePath ~= nil and ContractorMod.xmlSchema ~= nil then
+    local xml = XMLFile.load('ContractorMod', xmlFilePath, ContractorMod.xmlSchema)
+    if xml ~= nil then
+      for i = 0, ContractorMod.MAX_WORKERS - 1 do
+        local key = string.format("ContractorMod.workers.worker(%d)", i)
+        local name = xml:getString(key.."#name")
+        if name ~= nil and name ~= "" then
+          local style = PlayerStyle.new()
+          style:loadFromXMLFile(xml, key..".style")
+          table.insert(ContractorMod.characterPool, { name = name, style = style, fingerprint = self:getStyleFingerprint(style) })
+        end
+      end
+      xml:delete()
+    end
+  end
+  return ContractorMod.characterPool
+end
+
+-- @doc Check if a character from the pool is already used by a current worker (by name or by style)
+function ContractorMod:isCharacterPoolEntryUsed(entry)
+  if ContractorMod.workers == nil then
+    return false
+  end
+  for _, worker in pairs(ContractorMod.workers) do
+    if worker.name == entry.name then
+      return true
+    end
+    if entry.fingerprint ~= "" and self:getStyleFingerprint(worker.playerStyle) == entry.fingerprint then
+      return true
+    end
+  end
+  return false
+end
+
 function ContractorMod:addWorker()
   if ContractorMod.workers == nil or #ContractorMod.workers >= ContractorMod.MAX_WORKERS or ContractorMod:getFreeNPCIndex() == nil then
     ContractorMod:notify(string.format(g_i18n:getText("ContractorMod_MAX_WORKERS"), ContractorMod.MAX_WORKERS))
@@ -643,6 +680,17 @@ function ContractorMod:addWorker()
   local index = #ContractorMod.workers + 1
   local name = string.format(g_i18n:getText("ContractorMod_WORKER"), index)
   local workerStyle = g_helperManager:getRandomHelperStyle()
+  local available = {}
+  for _, entry in ipairs(self:getCharacterPool()) do
+    if not self:isCharacterPoolEntryUsed(entry) then
+      table.insert(available, entry)
+    end
+  end
+  if #available > 0 then
+    local entry = available[math.random(1, #available)]
+    name = entry.name
+    workerStyle = entry.style
+  end
   local worker = ContractorModWorker:new(name, index, workerStyle)
   if worker.npc == nil then
     ContractorMod:notify(string.format(g_i18n:getText("ContractorMod_MAX_WORKERS"), ContractorMod.MAX_WORKERS), true)
@@ -687,6 +735,10 @@ function ContractorMod:removeWorker(index)
   end
   local worker = ContractorMod.workers[index]
   if worker == nil then
+    return false
+  end
+  if index == ContractorMod.PLAYER_WORKER_INDEX then
+    ContractorMod:notify(g_i18n:getText("ContractorMod_PLAYER_WORKER"), true)
     return false
   end
   if #ContractorMod.workers <= ContractorMod.MIN_WORKERS then

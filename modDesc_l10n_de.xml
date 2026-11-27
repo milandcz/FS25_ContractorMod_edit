@@ -42,6 +42,8 @@
         <text name="ContractorMod_SWITCH_FIRST" text="Wechsle zuerst zu einem anderen Arbeiter" />
         <text name="ContractorMod_WORKER_HIRED" text="Arbeiter %s eingestellt" />
         <text name="ContractorMod_WORKER_FIRED" text="Arbeiter %s entlassen" />
+        <text name="ContractorMod_FIRE_CONFIRM" text="Möchtest du %s wirklich entlassen?" />
+        <text name="ContractorMod_PLAYER_WORKER" text="Arbeiter #1 ist die Spielerfigur und kann nicht entlassen werden" />
         <text name="ContractorMod_COL_WORKER" text="Arbeiter" />
         <text name="ContractorMod_COL_ACTIONS" text="Aktionen" />
     </texts>
