@@ -1,12 +1,15 @@
 MY UPDATE
 -------------
 24-NOV-2026 - v0.2.1.0
+
 Fixed interrupting assigned work when leaving a vehicle driven by a worker as AutoDrive/CoursePlay/FollowMe/classic AI jobs are stopped. The ContractorMod tab now shows the state only for the system that is actually driving and the remaining time for CP and AD.
 
 23-NOV-2026 - v0.2.0
+
 Added a ContractorMod tab to the in-game menu (Esc/Enter during a running game) for real-time worker management: hire (max 10 workers, a newly hired worker spawns next to the active character), fire (blocked while the worker is in a vehicle), rename, switch to a worker, and a per-worker table with location (coordinates or vehicle name), state (CoursePlay course / AutoDrive task / AI job / driving / on foot) and remaining time.
 
 20-NOV-2026 - v0.1.0
+
 Fixed trigger detection for individual characters. Triggers are now detected only for the active character.
 
 
