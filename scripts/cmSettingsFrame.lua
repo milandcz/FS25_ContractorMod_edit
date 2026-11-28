@@ -166,7 +166,12 @@ function ContractorModSettingsFrame:refreshWorkerRows()
         end
         local fireButton = row:getDescendantByName("fireButton")
         if fireButton ~= nil then
-          fireButton:setDisabled(ContractorMod:getWorkerVehicle(worker) ~= nil or #ContractorMod.workers <= ContractorMod.MIN_WORKERS)
+          if index == ContractorMod.PLAYER_WORKER_INDEX then
+            fireButton:setVisible(false)
+          else
+            fireButton:setVisible(true)
+            fireButton:setDisabled(ContractorMod:getWorkerVehicle(worker) ~= nil or #ContractorMod.workers <= ContractorMod.MIN_WORKERS)
+          end
         end
       end
     end
@@ -203,8 +208,20 @@ function ContractorModSettingsFrame:onClickSwitchWorker(workerIndex)
 end
 
 function ContractorModSettingsFrame:onClickFireWorker(workerIndex)
-  ContractorMod:removeWorker(workerIndex)
-  self:updateWorkerRows()
+  local worker = nil
+  if ContractorMod.workers ~= nil then
+    worker = ContractorMod.workers[workerIndex]
+  end
+  if worker == nil then
+    return
+  end
+  local frame = self
+  YesNoDialog.show(function(_, clickOk)
+    if clickOk then
+      ContractorMod:removeWorker(workerIndex)
+      frame:updateWorkerRows()
+    end
+  end, self, string.format(g_i18n:getText("ContractorMod_FIRE_CONFIRM"), worker.name))
 end
 
 function ContractorModSettingsFrame:onClickHireWorker()

@@ -19,5 +19,7 @@
         <text name="ContractorMod_NO_MORE_PASSENGER" text="Il n'y a plus de place passager dans ce véhicule" />
         <text name="ContractorMod_WORKER_INACTIVE" text="Ce personnage est actuellement inactif" />
         <text name="ContractorMod_SEAT_SWITCH_DISABLED" text="Le changement de siège est désactivé avec ContractorMod" />
+        <text name="ContractorMod_FIRE_CONFIRM" text="Veux-tu vraiment licencier %s ?" />
+        <text name="ContractorMod_PLAYER_WORKER" text="Le personnage #1 est le personnage du joueur et ne peut pas être licencié" />
     </texts>
 </l10n>

@@ -19,5 +19,7 @@
         <text name="ContractorMod_NO_MORE_PASSENGER" text="No hay espacio para un pasajero más en este vehículo" />
         <text name="ContractorMod_WORKER_INACTIVE" text="Este jornalero está actualmente inactivo" />
         <text name="ContractorMod_SEAT_SWITCH_DISABLED" text="Cambiar de asiento está deshabilitado con ContractorMod" />
+        <text name="ContractorMod_FIRE_CONFIRM" text="¿Seguro que quieres despedir a %s?" />
+        <text name="ContractorMod_PLAYER_WORKER" text="El jornalero #1 es el personaje del jugador y no se puede despedir" />
     </texts>
 </l10n>

@@ -19,5 +19,7 @@
         <text name="ContractorMod_NO_MORE_PASSENGER" text="Bu araçta yolcu için daha fazla yer yok" />
         <text name="ContractorMod_WORKER_INACTIVE" text="Bu işçi şu anda etkin değil" />
         <text name="ContractorMod_SEAT_SWITCH_DISABLED" text="ContractorMod ile koltuk değiştirme devre dışı bırakıldı" />
+        <text name="ContractorMod_FIRE_CONFIRM" text="%s adlı işçiyi gerçekten kovmak istiyor musun?" />
+        <text name="ContractorMod_PLAYER_WORKER" text="#1 numaralı işçi oyuncu karakteridir ve kovulamaz" />
     </texts>
 </l10n>

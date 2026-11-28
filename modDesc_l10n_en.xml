@@ -42,6 +42,8 @@
         <text name="ContractorMod_SWITCH_FIRST" text="Switch to another worker first" />
         <text name="ContractorMod_WORKER_HIRED" text="Worker %s hired" />
         <text name="ContractorMod_WORKER_FIRED" text="Worker %s fired" />
+        <text name="ContractorMod_FIRE_CONFIRM" text="Do you really want to fire %s?" />
+        <text name="ContractorMod_PLAYER_WORKER" text="Worker #1 is the player character and cannot be fired" />
         <text name="ContractorMod_COL_WORKER" text="Worker" />
         <text name="ContractorMod_COL_ACTIONS" text="Actions" />
     </texts>

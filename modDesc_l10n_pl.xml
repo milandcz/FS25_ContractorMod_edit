@@ -19,5 +19,7 @@
         <text name="ContractorMod_NO_MORE_PASSENGER" text="Brak więcej miejsca dla pasażera w tym pojeździe" />
         <text name="ContractorMod_WORKER_INACTIVE" text="Ten pracownik jest obecnie nieaktywny" />
         <text name="ContractorMod_SEAT_SWITCH_DISABLED" text="Zmiana siedzenia jest wyłączona z ContractorMod" />
+        <text name="ContractorMod_FIRE_CONFIRM" text="Czy na pewno chcesz zwolnić %s?" />
+        <text name="ContractorMod_PLAYER_WORKER" text="Pracownik #1 to postać gracza i nie można go zwolnić" />
     </texts>
 </l10n>
