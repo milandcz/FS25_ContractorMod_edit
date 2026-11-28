@@ -7,6 +7,9 @@ ContractorMod.PLAYER_WORKER_INDEX = 1
 -- KO: Driver exists with passenger
 local modDirectory = g_currentModDirectory
 local modSettingsDir = g_modSettingsDirectory
+if modSettingsDir == nil and modName ~= nil then
+  modSettingsDir = getUserProfileAppPath() .. "modSettings/" .. modName
+end
 local ContractorMod_mt = Class(ContractorMod)
 
 function ContractorMod:new(mission, i18n, inputBinding, gui, soundManager, modDirectory, modName)
@@ -253,6 +256,11 @@ function ContractorMod:initFromParameters()
     local xmlFile;
     if fileExists(xmlFilePath) then
       xml = XMLFile.load('ContractorMod', xmlFilePath, ContractorMod.xmlSchema)
+    elseif modDirectory and ContractorMod.xmlSchema ~= nil then
+      xml = XMLFile.loadIfExists('ContractorMod', modDirectory .. "/ContractorMod.xml", ContractorMod.xmlSchema)
+      if xml == nil then
+        return false
+      end
     else
       return false
     end
@@ -316,12 +324,12 @@ function ContractorMod:CopyContractorModXML()
       if not fileExists(xmlFilePath) and modDirectory then
         if ContractorMod.debug then print("ContractorMod:CopyContractorModXML_2") end
         local xmlSourceFilePath = modDirectory .. "/ContractorMod.xml"
-        local xmlSourceFile
-        if fileExists(xmlSourceFilePath) then
+        local ok, xmlSourceFile = pcall(loadXMLFile, 'ContractorMod', xmlSourceFilePath)
+        if ok and xmlSourceFile ~= nil and xmlSourceFile ~= 0 then
           if ContractorMod.debug then print("ContractorMod:CopyContractorModXML_3") end
-          xmlSourceFile = loadXMLFile('ContractorMod', xmlSourceFilePath)
           createFolder(modSettingsDir)
           saveXMLFileTo(xmlSourceFile, xmlFilePath)
+          delete(xmlSourceFile)
           if ContractorMod.debug then print("ContractorMod:CopyContractorModXML_4") end
         end
       end
@@ -631,24 +639,14 @@ function ContractorMod:getCharacterPool(xml)
   end
   ContractorMod.characterPool = {}
   local ownsXml = false
-  if xml == nil then
-    local xmlFilePath = nil
+  if xml == nil and ContractorMod.xmlSchema ~= nil then
     if modSettingsDir then
-      local settingsPath = modSettingsDir .. "/ContractorMod.xml"
-      if fileExists(settingsPath) then
-        xmlFilePath = settingsPath
-      end
+      xml = XMLFile.loadIfExists('ContractorMod', modSettingsDir .. "/ContractorMod.xml", ContractorMod.xmlSchema)
     end
-    if xmlFilePath == nil and modDirectory then
-      local modPath = modDirectory .. "/ContractorMod.xml"
-      if fileExists(modPath) then
-        xmlFilePath = modPath
-      end
+    if xml == nil and modDirectory then
+      xml = XMLFile.loadIfExists('ContractorMod', modDirectory .. "/ContractorMod.xml", ContractorMod.xmlSchema)
     end
-    if xmlFilePath ~= nil and ContractorMod.xmlSchema ~= nil then
-      xml = XMLFile.load('ContractorMod', xmlFilePath, ContractorMod.xmlSchema)
-      ownsXml = true
-    end
+    ownsXml = xml ~= nil
   end
   if xml ~= nil then
     for i = 0, ContractorMod.MAX_WORKERS - 1 do
